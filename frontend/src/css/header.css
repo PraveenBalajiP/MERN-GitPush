@@ -1,0 +1,91 @@
+.header{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+    border-radius:0px 0px 40px 40px;
+    backdrop-filter:blur(10px);
+}
+
+.logo{
+    height:100px;
+    padding: 10px;
+    padding-left:20px;
+}
+
+.main-nav{
+    border:2px solid var(--nav_color);
+    border-radius:25px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-around;
+    align-items:center;
+    font-family:'Poppins';
+    font-size:1.4em;
+    border:2px solid var(--nav_color);
+    border-radius:20px;
+    padding:5px 10px;
+    margin:3px;
+    background-color:var(--nav_color);
+}
+
+.nav a{
+    text-decoration:none;
+    color:var(--text_color_1);
+    padding:10px 20px 10px 20px;
+    border-radius:20px;
+    margin:0px 2px 0px 2px;
+}
+
+.main-btn{
+    border:2px solid var(--nav_color);
+    border-radius:25px;
+    margin:20px;
+}
+
+.home-btns{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-around;
+    align-items:center;
+    margin-right:20px;
+}
+
+.toggle-btn{
+    border:2px solid var(--nav_color);
+    background-color:var(--nav_color);
+    border-radius:20px;
+    padding:10px 20px 10px 20px;
+    font-family:'Poppins';
+    font-size:1.4em;
+    margin:3px;
+    color:var(--text_color_1);
+}
+
+.git-btn{
+    border:2px solid var(--nav_color);
+    background-color:var(--nav_color);
+    border-radius:20px;
+    padding:10px 20px 10px 20px;
+    font-family:'Poppins';
+    font-size:1.4em;
+    margin:3px;
+    color:var(--text_color_1);
+}
+
+.nav a:hover{
+    background-color:hsla(207,62%,50%,0.88);
+}
+
+.main-btn:hover{
+    scale:1.05;
+    transition:0.5s;
+}
+
+.main-btn:active{
+    scale:0.95;
+    transition:0.5s;    
+}
