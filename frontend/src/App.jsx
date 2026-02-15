@@ -22,10 +22,10 @@ function App() {
       <VantaBackground theme={theme} />
       <div className="app" style={{ position: "relative", zIndex: 2 }}>
         <Routes>
-            <Route path="/" element={<Login/>} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/history" element={<History />} />
+          <Route path="/" element={<Login theme={theme} setTheme={setTheme}/>} />
+          <Route path="/home" element={<Home theme={theme} setTheme={setTheme}/>} />
+          <Route path="/about" element={<About theme={theme} setTheme={setTheme}/>} />
+          <Route path="/history" element={<History theme={theme} setTheme={setTheme}/>} />
         </Routes>
       </div>
     </>

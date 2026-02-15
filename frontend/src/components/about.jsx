@@ -1,6 +1,6 @@
 import Header from "./header";
 
-function About(){
+function About({theme,setTheme}){
     return(
         <div className="about">
             <Header theme={theme} setTheme={setTheme} />

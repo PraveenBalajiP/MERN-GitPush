@@ -1,10 +1,10 @@
 import Header from "./header";
 
-function Home(){
+function Home({theme,setTheme}){
     return(
         <div className="home">
             <Header theme={theme} setTheme={setTheme} />
-
+                
         </div>
     );
 }

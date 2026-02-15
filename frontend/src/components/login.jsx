@@ -1,17 +1,19 @@
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import Header from "./login-nav"
 import axios from "axios";
 import toast from "react-hot-toast";
 import "../css/login.css"
 
-function Login(){
+function Login({theme, setTheme}){
     const [username,setUsername]=useState("");
     const [password,setPassword]=useState("");
-
     async function handleLogin(event){
         event.preventDefault();
         try{
             const response=await axios.post("http://localhost:5000/api/auth/login",{username,password});
             toast.success(response.data.message);
+            window.location.href="/home";
         }
         catch(error){
             if(error.response){
@@ -24,7 +26,9 @@ function Login(){
     }
 
     return(
-        <div className="login">
+        <div className="login-page">
+            <Header theme={theme} setTheme={setTheme} />
+            <div className="login">
             <h1>Login Page</h1>
             <div className="inputs">
                 <input  type="text" 
@@ -41,6 +45,7 @@ function Login(){
                         onClick={(event)=>{handleLogin(event)}}>Login</button>
             </div>
         </div>
+    </div>
     );
 }
 

@@ -1,6 +1,6 @@
 import Header from "./header";
 
-function History(){
+function History({theme,setTheme}){
     return(
         <div className="history">
             <Header theme={theme} setTheme={setTheme} />
