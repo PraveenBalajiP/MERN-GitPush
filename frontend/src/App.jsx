@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import VantaBackground from "./components/VantaRings";
+import VantaBackground from "./components/vantaRings";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/header";
 import Home from "./components/home";
