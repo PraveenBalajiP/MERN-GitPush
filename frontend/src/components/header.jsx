@@ -1,13 +1,8 @@
-import {useState,useEffect,useRef} from "react";
+import { useState } from "react";
 import {Link} from "react-router-dom"; 
-import logo from "../assets/logo.png"
 import "../css/header.css"
 
 function Header({theme,setTheme}){
-    const [slideMenu,setSlideMenu]=useState(false);
-    const navBtnRef=useRef();
-    const sideMenuRef=useRef();
-
     function swapTheme(){
         if(theme==="light"){
             setTheme("dark")
@@ -19,24 +14,22 @@ function Header({theme,setTheme}){
         }
     }
 
-    useEffect(()=>{
-        if(slideMenu){
-            sideMenuRef.current.style.transform="translateX(0)";
-        }
-        else{
-            sideMenuRef.current.style.transform="translateX(100%)";
-        }
-    },[slideMenu])
-
     return(
         <div className="main">
             <div className="header">
-            <img src={logo} alt="logo" className="logo"/>
+            <Link to="/home" className="brand-link">
+                <span className="brand-mark" aria-hidden="true">GP</span>
+                <span className="brand-copy">
+                    <span className="brand-name">GitPush Studio</span>
+                    <span className="brand-tag">GitHub sync workspace</span>
+                </span>
+            </Link>
             <div className="main-nav">
                 <div className="nav">
-                    <Link to="/">Home</Link>
+                    <Link to="/home">Home</Link>
                     <Link to="/about">About</Link>
                     <Link to="/history">History</Link>
+                    <Link to="/user">Workspace</Link>
                 </div>
             </div>
             <div className="home-btns">
@@ -48,20 +41,12 @@ function Header({theme,setTheme}){
                 </div>
                 <div className="main-btn">
                     <div className="git-profile">
-                        <button className="git-btn"><i className="fa-brands fa-github"></i></button>
-                    </div>
-                </div>
-                <div className="main-btn" ref={navBtnRef}>
-                    <div className="nav-btn">
-                        <button className="nav-toggle" onClick={()=>setSlideMenu(!slideMenu)}><i className="fa-solid fa-bars"></i></button>
+                        <Link to="/github" className="git-btn" onClick={()=>setSlideMenu(false)}>
+                            <i className="fa-brands fa-github"></i>
+                        </Link>
                     </div>
                 </div>
             </div>
-            </div>
-            <div className="slide-menu" ref={sideMenuRef}>
-                <Link to="/" onClick={()=>setSlideMenu(false)}>Home</Link>
-                <Link to="/about" onClick={()=>setSlideMenu(false)}>About</Link>
-                <Link to="/history" onClick={()=>setSlideMenu(false)}>History</Link>
             </div>
         </div>
         

@@ -8,6 +8,28 @@ const userSchema=mongoose.Schema({
     password:{
         type:String,
         required:true
+    },
+    githubConfig:{
+        repoOwner:{
+            type:String,
+            default:""
+        },
+        repoName:{
+            type:String,
+            default:""
+        },
+        branch:{
+            type:String,
+            default:"main"
+        },
+        folderPath:{
+            type:String,
+            default:""
+        },
+        token:{
+            type:String,
+            default:""
+        }
     }
 })
 

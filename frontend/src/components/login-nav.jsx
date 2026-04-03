@@ -1,4 +1,4 @@
-import logo from "../assets/logo.png"
+import { Link } from "react-router-dom";
 import "../css/header.css"
 
 function Header({theme,setTheme}){
@@ -16,7 +16,13 @@ function Header({theme,setTheme}){
     return(
         <div className="main">
             <div className="header">
-            <img src={logo} alt="logo" className="logo"/>
+            <Link to="/" className="brand-link">
+                <span className="brand-mark" aria-hidden="true">GP</span>
+                <span className="brand-copy">
+                    <span className="brand-name">GitPush Studio</span>
+                    <span className="brand-tag">GitHub sync workspace</span>
+                </span>
+            </Link>
             <div className="home-btns">
                 <div className="main-btn">
                     <div className="theme-toggle">
@@ -26,7 +32,15 @@ function Header({theme,setTheme}){
                 </div>
                 <div className="main-btn">
                     <div className="git-profile">
-                        <button className="git-btn"><i className="fa-brands fa-github"></i></button>
+                        <a
+                            className="git-btn"
+                            href="https://github.com"
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label="Open GitHub"
+                        >
+                            <i className="fa-brands fa-github"></i>
+                        </a>
                     </div>
                 </div>
             </div>

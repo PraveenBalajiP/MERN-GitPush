@@ -22,8 +22,8 @@ export default function VantaBackground({ theme }) {
     scaleMobile: 0.8,
     backgroundAlpha: 1.0,
 
-    color: theme === "dark" ? 0x0 : "hsl(0, 0%, 58%)",
-    backgroundColor: theme === "dark" ? 0x0 : "hsl(0, 0%, 58%)",
+    color: theme === "dark" ? 0x1b8ea8 : 0x2a89ac,
+    backgroundColor: theme === "dark" ? 0x08131e : 0xe7ddd0,
   });
 
   setVantaEffect(effect);
