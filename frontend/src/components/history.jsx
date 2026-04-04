@@ -1,6 +1,45 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Header from "./header";
 
 function History({theme,setTheme}){
+    const [historyItems,setHistoryItems]=useState([]);
+    const [loading,setLoading]=useState(true);
+    const [errorMessage,setErrorMessage]=useState("");
+
+    async function loadHistory(){
+        try{
+            setLoading(true);
+            setErrorMessage("");
+            const response=await axios.get("http://localhost:5000/api/github/history?limit=12",{
+                withCredentials:true
+            });
+            setHistoryItems(response.data?.history || []);
+        }
+        catch(error){
+            setHistoryItems([]);
+            setErrorMessage(error.response?.data?.message || "Unable to load history right now.");
+        }
+        finally{
+            setLoading(false);
+        }
+    }
+
+    useEffect(()=>{
+        loadHistory();
+    },[]);
+
+    function formatDate(value){
+        if(!value){
+            return "Unknown date";
+        }
+        const parsedDate=new Date(value);
+        if(Number.isNaN(parsedDate.getTime())){
+            return "Unknown date";
+        }
+        return parsedDate.toLocaleString();
+    }
+
     return(
         <div className="history page-shell">
             <Header theme={theme} setTheme={setTheme} />
@@ -10,33 +49,67 @@ function History({theme,setTheme}){
                     <p className="eyebrow">History</p>
                     <h1>Your learning journey, commit by commit</h1>
                     <p>
-                        Use this page as a roadmap for your progress. Keep the rhythm: write, push, reflect, repeat.
+                        Track recent repository updates created from your workspace pushes.
                     </p>
+                    <button type="button" className="btn-ghost history-refresh" onClick={loadHistory}>
+                        Refresh History
+                    </button>
                 </article>
 
-                <div className="timeline">
-                    <article className="glass-card timeline-item">
-                        <span>01</span>
-                        <div>
-                            <h3>Capture the idea</h3>
-                            <p>Draft the question and a clear answer in your workspace.</p>
-                        </div>
-                    </article>
-                    <article className="glass-card timeline-item">
-                        <span>02</span>
-                        <div>
-                            <h3>Push to repository</h3>
-                            <p>Publish instantly to your configured branch and folder path.</p>
-                        </div>
-                    </article>
-                    <article className="glass-card timeline-item">
-                        <span>03</span>
-                        <div>
-                            <h3>Review and improve</h3>
-                            <p>Revisit prior notes, identify weak spots, and iterate with better answers.</p>
-                        </div>
-                    </article>
-                </div>
+                {loading && (
+                    <div className="timeline">
+                        <article className="glass-card timeline-item">
+                            <span>..</span>
+                            <div>
+                                <h3>Loading history</h3>
+                                <p>Fetching latest commits from your configured GitHub repository.</p>
+                            </div>
+                        </article>
+                    </div>
+                )}
+
+                {!loading && errorMessage && (
+                    <div className="timeline">
+                        <article className="glass-card timeline-item">
+                            <span>!</span>
+                            <div>
+                                <h3>History unavailable</h3>
+                                <p>{errorMessage}</p>
+                            </div>
+                        </article>
+                    </div>
+                )}
+
+                {!loading && !errorMessage && historyItems.length===0 && (
+                    <div className="timeline">
+                        <article className="glass-card timeline-item">
+                            <span>0</span>
+                            <div>
+                                <h3>No updates yet</h3>
+                                <p>Push at least one question/answer pair from workspace to see history entries.</p>
+                            </div>
+                        </article>
+                    </div>
+                )}
+
+                {!loading && !errorMessage && historyItems.length>0 && (
+                    <div className="timeline">
+                        {historyItems.map((item,index)=>(
+                            <article className="glass-card timeline-item" key={item.sha}>
+                                <span>{String(index+1).padStart(2,"0")}</span>
+                                <div>
+                                    <h3>{item.message}</h3>
+                                    <p>{item.author} • {formatDate(item.date)}</p>
+                                    {item.url && (
+                                        <a className="timeline-link" href={item.url} target="_blank" rel="noreferrer">
+                                            View commit
+                                        </a>
+                                    )}
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                )}
             </section>
         </div>
     );

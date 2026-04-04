@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 import "../css/header.css"
 
 function Header({theme,setTheme}){
@@ -10,6 +12,29 @@ function Header({theme,setTheme}){
         else{
             setTheme("light");
             localStorage.setItem("theme","light");
+        }
+    }
+
+    async function openGitHub(event){
+        event?.preventDefault();
+        const fallbackUrl="https://github.com";
+        const popup=window.open(fallbackUrl,"_blank");
+        try{
+            const response=await axios.get("http://localhost:5000/api/auth/github-url",{withCredentials:true});
+            if(response.data.url){
+                if(popup){
+                    popup.location.href=response.data.url;
+                }
+                else{
+                    window.open(response.data.url,"_blank");
+                }
+            }
+            else{
+                toast.error("Unable to get your GitHub profile. Opening GitHub home instead.");
+            }
+        }
+        catch(error){
+            toast.error("Error fetching GitHub profile URL. Opening GitHub home instead.");
         }
     }
 
@@ -26,22 +51,14 @@ function Header({theme,setTheme}){
             <div className="home-btns">
                 <div className="main-btn">
                     <div className="theme-toggle">
-                        <button className="toggle-btn"
+                        <button type="button" className="toggle-btn"
                              onClick={swapTheme}>{theme==="light"?<i className="fa-solid fa-moon"></i>:<i className="fa-solid fa-sun"></i>}</button>
                     </div>
                 </div>
                 <div className="main-btn">
-                    <div className="git-profile">
-                        <a
-                            className="git-btn"
-                            href="https://github.com"
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label="Open GitHub"
-                        >
-                            <i className="fa-brands fa-github"></i>
-                        </a>
-                    </div>
+                    <button type="button" className="git-btn" onClick={openGitHub} aria-label="Open GitHub profile">
+                        <i className="fa-brands fa-github"></i>    
+                    </button>
                 </div>
             </div>
             </div>

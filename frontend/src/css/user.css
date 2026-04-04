@@ -47,9 +47,51 @@
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.qa-field input[type="text"] {
+    width: 100%;
+    border: 1px solid var(--outline);
+    border-radius: 0.9rem;
+    background: color-mix(in oklab, var(--surface-1) 80%, transparent);
+    color: var(--text-primary);
+    padding: 0.7rem 0.9rem;
+    font-family: "Outfit", sans-serif;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.qa-field input[type="text"]:focus,
 .qa-field textarea:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 22%, transparent);
+}
+
+.file-upload {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin-top: 0.15rem;
+    border: 1px dashed color-mix(in oklab, var(--accent) 50%, var(--outline));
+    border-radius: 999px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.file-upload:hover {
+    border-color: var(--accent);
+    color: var(--accent-strong);
+}
+
+.file-input {
+    display: none;
+}
+
+.file-meta {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
 }
 
 .user-actions {

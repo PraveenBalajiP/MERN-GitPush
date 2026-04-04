@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -8,27 +8,55 @@ import "../css/user.css";
 function User({ theme, setTheme }) {
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
+    const [questionFile, setQuestionFile] = useState(null);
+    const [answerFile, setAnswerFile] = useState(null);
+    const [commitMessage, setCommitMessage] = useState("");
     const [isPushing, setIsPushing] = useState(false);
+    const questionFileRef = useRef(null);
+    const answerFileRef = useRef(null);
     const navigate = useNavigate();
 
     async function pushToGithub(event) {
         event.preventDefault();
-        if (!question.trim() || !answer.trim()) {
-            toast.error("Please fill both question and answer");
+        const hasQuestionInput = Boolean(question.trim() || questionFile);
+        const hasAnswerInput = Boolean(answer.trim() || answerFile);
+        if (!hasQuestionInput || !hasAnswerInput) {
+            toast.error("Provide question and answer as text or files");
             return;
         }
 
         try {
             setIsPushing(true);
+            const payload = new FormData();
+            payload.append("question", question.trim());
+            payload.append("answer", answer.trim());
+            payload.append("commitMessage", commitMessage.trim());
+
+            if (questionFile) {
+                payload.append("questionFile", questionFile);
+            }
+            if (answerFile) {
+                payload.append("answerFile", answerFile);
+            }
+
             const response = await axios.post(
                 "http://localhost:5000/api/github/push",
-                { question, answer },
+                payload,
                 { withCredentials: true }
             );
 
             toast.success(response.data.message || "Pushed successfully");
             setQuestion("");
             setAnswer("");
+            setCommitMessage("");
+            setQuestionFile(null);
+            setAnswerFile(null);
+            if (questionFileRef.current) {
+                questionFileRef.current.value = "";
+            }
+            if (answerFileRef.current) {
+                answerFileRef.current.value = "";
+            }
         } catch (error) {
             toast.error(error.response?.data?.message || "Push failed");
         } finally {
@@ -44,7 +72,18 @@ function User({ theme, setTheme }) {
                 <form className="user-card glass-card" onSubmit={pushToGithub}>
                     <p className="eyebrow">Workspace</p>
                     <h1>User Workspace</h1>
-                    <p>Write your question and answer, then push directly to your configured GitHub repository.</p>
+                    <p>Write your question and answer, upload files, then push directly to your configured GitHub repository.</p>
+
+                    <div className="qa-field">
+                        <label htmlFor="commitMessage">Commit Message (optional)</label>
+                        <input
+                            id="commitMessage"
+                            type="text"
+                            value={commitMessage}
+                            onChange={(e) => setCommitMessage(e.target.value)}
+                            placeholder="example: Add day-12 question and answer"
+                        />
+                    </div>
 
                     <div className="qa-field">
                         <label htmlFor="question">Question</label>
@@ -54,6 +93,16 @@ function User({ theme, setTheme }) {
                             onChange={(e) => setQuestion(e.target.value)}
                             placeholder="Type the question here"
                         />
+                        <label className="file-upload" htmlFor="questionFile">Upload question file</label>
+                        <input
+                            id="questionFile"
+                            ref={questionFileRef}
+                            className="file-input"
+                            type="file"
+                            accept=".txt,.md,.json,.csv"
+                            onChange={(e) => setQuestionFile(e.target.files?.[0] || null)}
+                        />
+                        <span className="file-meta">{questionFile ? `Selected: ${questionFile.name}` : "No file selected"}</span>
                     </div>
 
                     <div className="qa-field">
@@ -64,6 +113,16 @@ function User({ theme, setTheme }) {
                             onChange={(e) => setAnswer(e.target.value)}
                             placeholder="Type the answer here"
                         />
+                        <label className="file-upload" htmlFor="answerFile">Upload answer file</label>
+                        <input
+                            id="answerFile"
+                            ref={answerFileRef}
+                            className="file-input"
+                            type="file"
+                            accept=".txt,.md,.json,.csv"
+                            onChange={(e) => setAnswerFile(e.target.files?.[0] || null)}
+                        />
+                        <span className="file-meta">{answerFile ? `Selected: ${answerFile.name}` : "No file selected"}</span>
                     </div>
 
                     <div className="user-actions">

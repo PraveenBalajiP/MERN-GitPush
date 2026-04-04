@@ -1,9 +1,16 @@
 import express from "express";
 import axios from "axios";
+import multer from "multer";
 import User from "../models/user.models.js";
 import protectedRoute from "../middleware/protectedRoute.js";
 
 const router = express.Router();
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 2 * 1024 * 1024
+    }
+});
 
 function sanitizePath(value) {
     return (value || "")
@@ -93,9 +100,20 @@ router.post("/config", protectedRoute, async (req, res) => {
     }
 });
 
-router.post("/push", protectedRoute, async (req, res) => {
+router.post(
+    "/push",
+    protectedRoute,
+    upload.fields([
+        { name: "questionFile", maxCount: 1 },
+        { name: "answerFile", maxCount: 1 }
+    ]),
+    async (req, res) => {
     try {
-        const { question, answer } = req.body;
+        const questionText = (req.body.question || "").trim();
+        const answerText = (req.body.answer || "").trim();
+        const commitMessage = (req.body.commitMessage || "").trim();
+        const questionFile = req.files?.questionFile?.[0];
+        const answerFile = req.files?.answerFile?.[0];
         const user = await User.findById(req.user.id);
 
         if (!user) {
@@ -109,11 +127,20 @@ router.post("/push", protectedRoute, async (req, res) => {
             });
         }
 
-        if (!question || !answer) {
-            return res.status(400).json({ message: "Question and answer are required" });
+        const questionContent = questionFile
+            ? questionFile.buffer.toString("utf-8").trim()
+            : questionText;
+        const answerContent = answerFile
+            ? answerFile.buffer.toString("utf-8").trim()
+            : answerText;
+
+        if (!questionContent || !answerContent) {
+            return res.status(400).json({
+                message: "Question and answer are required as text or files"
+            });
         }
 
-        const entryFolderName = `${Date.now()}-${slugify(question)}`;
+        const entryFolderName = `${Date.now()}-${slugify(questionContent)}`;
         const folder = sanitizePath(config.folderPath);
         const entryFolderPath = folder ? `${folder}/${entryFolderName}` : entryFolderName;
 
@@ -123,16 +150,16 @@ router.post("/push", protectedRoute, async (req, res) => {
 
         await uploadFile({
             apiUrl: `${baseRepoUrl}/${questionPath}`,
-            message: `Add question file: ${questionPath}`,
-            content: buildTextFileContent("Question", question.trim()),
+            message: commitMessage || `Add question file: ${questionPath}`,
+            content: buildTextFileContent("Question", questionContent),
             branch: config.branch || "main",
             token: config.token
         });
 
         await uploadFile({
             apiUrl: `${baseRepoUrl}/${answerPath}`,
-            message: `Add answer file: ${answerPath}`,
-            content: buildTextFileContent("Answer", answer.trim()),
+            message: commitMessage || `Add answer file: ${answerPath}`,
+            content: buildTextFileContent("Answer", answerContent),
             branch: config.branch || "main",
             token: config.token
         });
@@ -149,6 +176,55 @@ router.post("/push", protectedRoute, async (req, res) => {
         const status = error.response?.status || 500;
         const details = error.response?.data?.message || error.message;
         return res.status(status).json({ message: `GitHub push failed: ${details}` });
+    }
+}
+);
+
+router.get("/history", protectedRoute, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const config = user.githubConfig || {};
+        if (!config.repoOwner || !config.repoName || !config.token) {
+            return res.status(400).json({
+                message: "Missing GitHub settings. Configure repo owner, repo name, and token first."
+            });
+        }
+
+        const requestedLimit = Number(req.query.limit);
+        const limit = Number.isFinite(requestedLimit)
+            ? Math.min(Math.max(requestedLimit, 1), 30)
+            : 12;
+
+        const commitsUrl = `https://api.github.com/repos/${config.repoOwner}/${config.repoName}/commits`;
+        const response = await axios.get(commitsUrl, {
+            headers: {
+                Authorization: `Bearer ${config.token}`,
+                Accept: "application/vnd.github+json"
+            },
+            params: {
+                sha: config.branch || "main",
+                per_page: limit,
+                ...(config.folderPath ? { path: sanitizePath(config.folderPath) } : {})
+            }
+        });
+
+        const history = (response.data || []).map((item) => ({
+            sha: item.sha,
+            message: item.commit?.message || "No commit message",
+            author: item.commit?.author?.name || "Unknown",
+            date: item.commit?.author?.date || null,
+            url: item.html_url || ""
+        }));
+
+        return res.status(200).json({ history });
+    } catch (error) {
+        const status = error.response?.status || 500;
+        const details = error.response?.data?.message || error.message;
+        return res.status(status).json({ message: `Failed to fetch history: ${details}` });
     }
 });
 

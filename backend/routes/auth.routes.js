@@ -6,6 +6,20 @@ import protectedRoute from "../middleware/protectedRoute.js";
 
 const router=express.Router();
 
+router.post("/register",async (req,res)=>{
+    try{
+        const {username,password}=req.body;
+        const hashedPassword=await bcrypt.hash(password,10);
+        const user=new User({username,password:hashedPassword});
+        await user.save();
+        res.status(201).json({message:"Registration Successful",user:{id:user._id,username:user.username}});
+    }
+    catch(error){
+        console.error("Registration error:",error);
+        res.status(500).json({message:"Registration Failed: "+error.message});
+    }
+});
+
 router.post("/login",async (req,res)=>{
     try{
         const {username,password}=req.body;
@@ -29,5 +43,25 @@ router.post("/login",async (req,res)=>{
 router.get("/verify", protectedRoute, (req,res)=>{
     res.status(200).json({message:"Authenticated", user:req.user});
 });
+
+router.get("/github-url", protectedRoute, async (req, res) => {
+    try{
+        const user=await User.findById(req.user.id);
+        if(!user){
+            return res.status(404).json({message:"User not found"});
+        }
+        const gitHubUserName=user.githubConfig?.repoOwner;
+        if(!gitHubUserName){
+            return res.status(400).json({message:"GitHub username not configured"});
+        }
+        const url=`https://github.com/${gitHubUserName}`;
+        console.log(url);
+        res.status(200).json({url});
+    }
+    catch(error){
+        console.error("GitHub URL error:", error);
+        res.status(500).json({ message: "Failed to get GitHub URL" });
+    }
+})
 
 export default router;
