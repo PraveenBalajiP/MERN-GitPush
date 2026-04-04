@@ -70,10 +70,14 @@ function User({ theme, setTheme }) {
 
             <section className="content-wrap">
                 <form className="user-card glass-card" onSubmit={pushToGithub}>
-                    <p className="eyebrow">Workspace</p>
-                    <h1>User Workspace</h1>
-                    <p>Write your question and answer, upload files, then push directly to your configured GitHub repository.</p>
-
+                    <div className="header-1">
+                        <div className="header-1-1">
+                            <p className="eyebrow">Workspace</p>
+                            <h1>User Workspace</h1>
+                            <p>Write your question and answer, upload files, then push directly to your configured GitHub repository.</p>
+                        </div>
+                        <button type="button" className="secondary open-settings-btn" onClick={() => navigate("/github")}>Open GitHub Settings</button>
+                    </div>
                     <div className="qa-field">
                         <label htmlFor="commitMessage">Commit Message (optional)</label>
                         <input
@@ -127,7 +131,6 @@ function User({ theme, setTheme }) {
 
                     <div className="user-actions">
                         <button type="submit" disabled={isPushing}>{isPushing ? "Pushing..." : "Push to GitHub"}</button>
-                        <button type="button" className="secondary" onClick={() => navigate("/github")}>Open GitHub Settings</button>
                     </div>
                 </form>
             </section>

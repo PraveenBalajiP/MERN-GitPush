@@ -1,13 +1,24 @@
+:root {
+    --nav-solid-bg: #f2efe8;
+    --nav-solid-elevated: #f6f4ee;
+}
+
+[data-theme="dark"] {
+    --nav-solid-bg: #0f1d2a;
+    --nav-solid-elevated: #122333;
+}
+
 .main {
     width: 100%;
     margin: 0;
     position: sticky;
     top: 0;
     z-index: 1000;
-    backdrop-filter: blur(22px);
+    isolation: isolate;
+    backdrop-filter: none;
+    background-color: var(--nav-solid-bg);
     background:
-        linear-gradient(135deg, color-mix(in oklab, var(--surface-1) 96%, #ffffff 4%), color-mix(in oklab, var(--surface-2) 94%, #ffffff 6%)),
-        linear-gradient(135deg, color-mix(in oklab, var(--accent) 10%, transparent), color-mix(in oklab, var(--accent-strong) 12%, transparent));
+        linear-gradient(135deg, var(--nav-solid-bg), var(--nav-solid-elevated));
     border: 1px solid color-mix(in oklab, var(--outline) 80%, transparent);
     border-radius: 0 0 1rem 1rem;
     box-shadow: 0 12px 28px rgba(10, 43, 71, 0.1);
@@ -89,12 +100,11 @@
     padding: 0.42rem;
     border-radius:20px;
     background:
-        linear-gradient(135deg, color-mix(in oklab, var(--surface-1) 62%, transparent), color-mix(in oklab, var(--surface-3) 56%, transparent)),
-        linear-gradient(135deg, color-mix(in oklab, var(--accent) 10%, transparent), color-mix(in oklab, var(--accent-strong) 12%, transparent));
+        linear-gradient(135deg, color-mix(in oklab, var(--nav-solid-elevated) 92%, #ffffff 8%), color-mix(in oklab, var(--nav-solid-bg) 95%, #ffffff 5%));
     flex-wrap: wrap;
     justify-content: center;
     box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--outline) 70%, transparent), 0 10px 24px rgba(6, 122, 166, 0.08);
-    backdrop-filter: blur(14px);
+    backdrop-filter: none;
     max-width: 100%;
 }
 
@@ -203,8 +213,11 @@
     .mobile-nav {
         display: block;
         width: 100%;
-        margin-top: 0.35rem;
-        padding: 0 1rem 0.55rem;
+        margin-top: 0;
+        padding: 0 1rem 0.65rem;
+        position: relative;
+        z-index: 1001;
+        background: linear-gradient(145deg, var(--nav-solid-bg), var(--nav-solid-elevated));
     }
 
     .mobile-nav .nav {
@@ -218,6 +231,7 @@
         justify-content: stretch;
         padding: 0;
         gap: 0;
+        box-shadow: none;
     }
 
     .mobile-nav.open .nav {
@@ -240,7 +254,7 @@
     .mobile-nav .nav a {
         display: inline-flex;
         justify-content: center;
-        background: color-mix(in oklab, var(--surface-1) 68%, transparent);
+        background: color-mix(in oklab, var(--nav-solid-elevated) 95%, #ffffff 5%);
     }
 }
 

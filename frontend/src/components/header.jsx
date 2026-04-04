@@ -68,7 +68,6 @@ function Header({theme,setTheme}){
     }
 
     return(
-        <>
         <div className="main">
             <div className="header">
             <Link to="/home" className="brand-link" onClick={closeMenu}>
@@ -109,16 +108,15 @@ function Header({theme,setTheme}){
                 </div>
             </div>
             </div>
-        </div>
-        <div className={`mobile-nav ${menuOpen?"open":""}`}>
-            <div className="nav">
-                <Link to="/home" onClick={closeMenu}>Home</Link>
-                <Link to="/about" onClick={closeMenu}>About</Link>
-                <Link to="/history" onClick={closeMenu}>History</Link>
-                <Link to="/user" onClick={closeMenu}>Workspace</Link>
+            <div className={`mobile-nav ${menuOpen?"open":""}`}>
+                <div className="nav">
+                    <Link to="/home" onClick={closeMenu}>Home</Link>
+                    <Link to="/about" onClick={closeMenu}>About</Link>
+                    <Link to="/history" onClick={closeMenu}>History</Link>
+                    <Link to="/user" onClick={closeMenu}>Workspace</Link>
+                </div>
             </div>
         </div>
-        </>
     );
 }
 
