@@ -112,6 +112,7 @@ router.post(
         const questionText = (req.body.question || "").trim();
         const answerText = (req.body.answer || "").trim();
         const commitMessage = (req.body.commitMessage || "").trim();
+        const requestedEntryFolderName = sanitizePath(req.body.entryFolderName || "");
         const questionFile = req.files?.questionFile?.[0];
         const answerFile = req.files?.answerFile?.[0];
         const user = await User.findById(req.user.id);
@@ -140,7 +141,12 @@ router.post(
             });
         }
 
-        const entryFolderName = `${Date.now()}-${slugify(questionContent)}`;
+        const safeCustomFolderName = requestedEntryFolderName
+            .split("/")
+            .filter(Boolean)
+            .map((part) => slugify(part))
+            .join("/");
+        const entryFolderName = safeCustomFolderName || `${Date.now()}-${slugify(questionContent)}`;
         const folder = sanitizePath(config.folderPath);
         const entryFolderPath = folder ? `${folder}/${entryFolderName}` : entryFolderName;
 

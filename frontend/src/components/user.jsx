@@ -11,6 +11,7 @@ function User({ theme, setTheme }) {
     const [questionFile, setQuestionFile] = useState(null);
     const [answerFile, setAnswerFile] = useState(null);
     const [commitMessage, setCommitMessage] = useState("");
+    const [entryFolderName, setEntryFolderName] = useState("");
     const [isPushing, setIsPushing] = useState(false);
     const questionFileRef = useRef(null);
     const answerFileRef = useRef(null);
@@ -31,6 +32,7 @@ function User({ theme, setTheme }) {
             payload.append("question", question.trim());
             payload.append("answer", answer.trim());
             payload.append("commitMessage", commitMessage.trim());
+            payload.append("entryFolderName", entryFolderName.trim());
 
             if (questionFile) {
                 payload.append("questionFile", questionFile);
@@ -49,6 +51,7 @@ function User({ theme, setTheme }) {
             setQuestion("");
             setAnswer("");
             setCommitMessage("");
+            setEntryFolderName("");
             setQuestionFile(null);
             setAnswerFile(null);
             if (questionFileRef.current) {
@@ -86,6 +89,17 @@ function User({ theme, setTheme }) {
                             value={commitMessage}
                             onChange={(e) => setCommitMessage(e.target.value)}
                             placeholder="example: Add day-12 question and answer"
+                        />
+                    </div>
+
+                    <div className="qa-field">
+                        <label htmlFor="entryFolderName">Enter Folder Name (optional)</label>
+                        <input
+                            id="entryFolderName"
+                            type="text"
+                            value={entryFolderName}
+                            onChange={(e) => setEntryFolderName(e.target.value)}
+                            placeholder="example: arrays-day-12"
                         />
                     </div>
 
