@@ -32,6 +32,131 @@
     font-size: 0.93rem;
 }
 
+.mode-title {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.93rem;
+}
+
+.entry-mode-group {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.entry-mode-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid var(--outline);
+    background: color-mix(in oklab, var(--surface-1) 88%, transparent);
+    font-size: 0.86rem;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.entry-mode-option input {
+    margin: 0;
+    accent-color: var(--accent-strong);
+}
+
+.multi-text-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+}
+
+.text-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.text-add-btn {
+    border: 1px solid color-mix(in oklab, #1f9b78 55%, var(--outline));
+    background: linear-gradient(135deg, #2bbf94, #1f9b78);
+    color: #ffffff;
+    border-radius: 999px;
+    padding: 0.42rem 0.78rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.text-delete-btn {
+    border: 1px solid color-mix(in oklab, #c64141 35%, var(--outline));
+    background: linear-gradient(135deg, #e35858, #bf3c3c);
+    color: #ffffff;
+    border-radius: 999px;
+    padding: 0.42rem 0.78rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.text-add-btn:hover,
+.text-delete-btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+    box-shadow: 0 8px 16px rgba(8, 125, 167, 0.2);
+}
+
+.text-add-btn:active,
+.text-delete-btn:active {
+    transform: translateY(0);
+}
+
+.text-add-btn:focus-visible,
+.text-delete-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 24%, transparent);
+}
+
+.text-switcher {
+    display: flex;
+    gap: 0.45rem;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+    scrollbar-width: thin;
+}
+
+.text-switch-btn {
+    border: 1px solid var(--outline);
+    background: color-mix(in oklab, var(--surface-2) 80%, transparent);
+    color: var(--text-primary);
+    border-radius: 999px;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 0.7rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.text-switch-btn:hover {
+    transform: translateY(-1px);
+}
+
+.text-switch-btn.active {
+    background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 7px 14px rgba(8, 125, 167, 0.28);
+}
+
 .qa-field textarea {
     width: 100%;
     min-height: 130px;
@@ -92,6 +217,13 @@
 .file-meta {
     font-size: 0.8rem;
     color: var(--text-secondary);
+}
+
+.file-list {
+    margin: 0.25rem 0 0;
+    padding-left: 1.1rem;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
 }
 
 .header-1{
@@ -173,5 +305,21 @@
     .open-settings-btn {
         width: 100%;
         justify-content: center;
+    }
+
+    .multi-text-top {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .text-actions {
+        width: 100%;
+    }
+
+    .text-add-btn,
+    .text-delete-btn {
+        flex: 1;
+        justify-content: center;
+        min-height: 2.2rem;
     }
 }

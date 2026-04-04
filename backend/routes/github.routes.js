@@ -28,6 +28,12 @@ function slugify(value) {
         .slice(0, 50) || "entry";
 }
 
+function toSafeFileName(value, fallback) {
+    const baseName = sanitizePath(value || "").split("/").pop() || fallback;
+    const hasExtension = /\.[a-zA-Z0-9]+$/.test(baseName);
+    return hasExtension ? baseName : `${baseName}.txt`;
+}
+
 function buildTextFileContent(title, content) {
     return [
         `${title}:`,
@@ -103,18 +109,29 @@ router.post("/config", protectedRoute, async (req, res) => {
 router.post(
     "/push",
     protectedRoute,
-    upload.fields([
-        { name: "questionFile", maxCount: 1 },
-        { name: "answerFile", maxCount: 1 }
-    ]),
+    upload.any(),
     async (req, res) => {
     try {
+        const entryMode = (req.body.entryMode || "qa").trim();
         const questionText = (req.body.question || "").trim();
         const answerText = (req.body.answer || "").trim();
+        const singleText = (req.body.singleText || "").trim();
         const commitMessage = (req.body.commitMessage || "").trim();
         const requestedEntryFolderName = sanitizePath(req.body.entryFolderName || "");
-        const questionFile = req.files?.questionFile?.[0];
-        const answerFile = req.files?.answerFile?.[0];
+        let parsedMultipleTexts = [];
+        try {
+            parsedMultipleTexts = JSON.parse(req.body.multipleTexts || "[]");
+            if (!Array.isArray(parsedMultipleTexts)) {
+                parsedMultipleTexts = [];
+            }
+        } catch {
+            parsedMultipleTexts = [];
+        }
+        const files = Array.isArray(req.files) ? req.files : [];
+        const questionFile = files.find((file) => file.fieldname === "questionFile");
+        const answerFile = files.find((file) => file.fieldname === "answerFile");
+        const singleFile = files.find((file) => file.fieldname === "singleFile");
+        const multiFiles = files.filter((file) => file.fieldname === "multiFiles");
         const user = await User.findById(req.user.id);
 
         if (!user) {
@@ -128,55 +145,128 @@ router.post(
             });
         }
 
-        const questionContent = questionFile
-            ? questionFile.buffer.toString("utf-8").trim()
-            : questionText;
-        const answerContent = answerFile
-            ? answerFile.buffer.toString("utf-8").trim()
-            : answerText;
-
-        if (!questionContent || !answerContent) {
-            return res.status(400).json({
-                message: "Question and answer are required as text or files"
-            });
-        }
-
         const safeCustomFolderName = requestedEntryFolderName
             .split("/")
             .filter(Boolean)
             .map((part) => slugify(part))
             .join("/");
-        const entryFolderName = safeCustomFolderName || `${Date.now()}-${slugify(questionContent)}`;
+        const defaultFolderSeed = questionText || questionFile?.originalname || singleFile?.originalname || "entry";
+        const entryFolderName = safeCustomFolderName || `${Date.now()}-${slugify(defaultFolderSeed)}`;
         const folder = sanitizePath(config.folderPath);
         const entryFolderPath = folder ? `${folder}/${entryFolderName}` : entryFolderName;
-
-        const questionPath = `${entryFolderPath}/question.txt`;
-        const answerPath = `${entryFolderPath}/answer.txt`;
         const baseRepoUrl = `https://api.github.com/repos/${config.repoOwner}/${config.repoName}/contents`;
+        const pushedFiles = [];
 
-        await uploadFile({
-            apiUrl: `${baseRepoUrl}/${questionPath}`,
-            message: commitMessage || `Add question file: ${questionPath}`,
-            content: buildTextFileContent("Question", questionContent),
-            branch: config.branch || "main",
-            token: config.token
-        });
+        if (entryMode === "qa") {
+            const questionContent = questionFile
+                ? questionFile.buffer.toString("utf-8").trim()
+                : questionText;
+            const answerContent = answerFile
+                ? answerFile.buffer.toString("utf-8").trim()
+                : answerText;
 
-        await uploadFile({
-            apiUrl: `${baseRepoUrl}/${answerPath}`,
-            message: commitMessage || `Add answer file: ${answerPath}`,
-            content: buildTextFileContent("Answer", answerContent),
-            branch: config.branch || "main",
-            token: config.token
-        });
+            if (!questionContent || !answerContent) {
+                return res.status(400).json({
+                    message: "Question and answer are required as text or files"
+                });
+            }
+
+            const questionPath = `${entryFolderPath}/question.txt`;
+            const answerPath = `${entryFolderPath}/answer.txt`;
+
+            await uploadFile({
+                apiUrl: `${baseRepoUrl}/${questionPath}`,
+                message: commitMessage || `Add question file: ${questionPath}`,
+                content: buildTextFileContent("Question", questionContent),
+                branch: config.branch || "main",
+                token: config.token
+            });
+
+            await uploadFile({
+                apiUrl: `${baseRepoUrl}/${answerPath}`,
+                message: commitMessage || `Add answer file: ${answerPath}`,
+                content: buildTextFileContent("Answer", answerContent),
+                branch: config.branch || "main",
+                token: config.token
+            });
+
+            pushedFiles.push(questionPath, answerPath);
+        } else if (entryMode === "single") {
+            if (!singleFile && !singleText) {
+                return res.status(400).json({ message: "Single text or single file is required" });
+            }
+
+            if (singleText) {
+                const textPath = `${entryFolderPath}/single-entry.txt`;
+                await uploadFile({
+                    apiUrl: `${baseRepoUrl}/${textPath}`,
+                    message: commitMessage || `Add file: ${textPath}`,
+                    content: singleText,
+                    branch: config.branch || "main",
+                    token: config.token
+                });
+                pushedFiles.push(textPath);
+            }
+
+            if (singleFile) {
+                const fileName = sanitizePath(singleFile.originalname || "entry.txt").split("/").pop() || "entry.txt";
+                const filePath = `${entryFolderPath}/${fileName}`;
+
+                await uploadFile({
+                    apiUrl: `${baseRepoUrl}/${filePath}`,
+                    message: commitMessage || `Add file: ${filePath}`,
+                    content: singleFile.buffer.toString("utf-8"),
+                    branch: config.branch || "main",
+                    token: config.token
+                });
+
+                pushedFiles.push(filePath);
+            }
+        } else if (entryMode === "multiple") {
+            const validTextEntries = parsedMultipleTexts
+                .map((entry, index) => ({
+                    name: toSafeFileName(entry?.name, `text-${index + 1}.txt`),
+                    content: (entry?.content || "").toString().trim()
+                }))
+                .filter((entry) => entry.content);
+
+            if (multiFiles.length === 0 && validTextEntries.length === 0) {
+                return res.status(400).json({ message: "At least one text entry or file is required" });
+            }
+
+            for (const [index, textEntry] of validTextEntries.entries()) {
+                const fileName = toSafeFileName(textEntry.name, `text-${index + 1}.txt`);
+                const filePath = `${entryFolderPath}/${fileName}`;
+                await uploadFile({
+                    apiUrl: `${baseRepoUrl}/${filePath}`,
+                    message: commitMessage || `Add file: ${filePath}`,
+                    content: textEntry.content,
+                    branch: config.branch || "main",
+                    token: config.token
+                });
+                pushedFiles.push(filePath);
+            }
+
+            for (const file of multiFiles) {
+                const fileName = sanitizePath(file.originalname || "file.txt").split("/").pop() || "file.txt";
+                const filePath = `${entryFolderPath}/${fileName}`;
+                await uploadFile({
+                    apiUrl: `${baseRepoUrl}/${filePath}`,
+                    message: commitMessage || `Add file: ${filePath}`,
+                    content: file.buffer.toString("utf-8"),
+                    branch: config.branch || "main",
+                    token: config.token
+                });
+                pushedFiles.push(filePath);
+            }
+        } else {
+            return res.status(400).json({ message: "Invalid entry mode" });
+        }
 
         return res.status(200).json({
             message: "Pushed to GitHub successfully",
             folder: entryFolderPath,
-            files: {
-                question: questionPath,
-                answer: answerPath
-            }
+            files: pushedFiles
         });
     } catch (error) {
         const status = error.response?.status || 500;
