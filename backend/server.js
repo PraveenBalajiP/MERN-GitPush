@@ -35,6 +35,10 @@ app.use("/api/auth",authRoutes)
 app.use("/",routes);
 app.use("/api/github", githubRoutes);
 
+app.get("/",(req,res)=>{
+    res.send("Welcome to GitPush Studio API");
+});
+
 app.listen(PORT,()=>{
     console.log(`Server is running on port ${PORT}`);
     connectDB();
