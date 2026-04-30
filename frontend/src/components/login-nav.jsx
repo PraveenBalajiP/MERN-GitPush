@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api from "../api.js";
 import toast from "react-hot-toast";
 import "../css/header.css"
 
@@ -20,7 +20,7 @@ function Header({theme,setTheme}){
         const fallbackUrl="https://github.com";
         const popup=window.open(fallbackUrl,"_blank");
         try{
-            const response=await axios.get("http://localhost:5000/api/auth/github-url",{withCredentials:true});
+            const response=await api.get("/api/auth/github-url");
             if(response.data.url){
                 if(popup){
                     popup.location.href=response.data.url;

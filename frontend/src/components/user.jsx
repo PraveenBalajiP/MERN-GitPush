@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api.js";
 import toast from "react-hot-toast";
 import Header from "./header";
 import "../css/user.css";
@@ -82,10 +82,9 @@ function User({ theme, setTheme }) {
                 payload.append("multiFiles", file);
             });
 
-            const response = await axios.post(
-                "http://localhost:5000/api/github/push",
-                payload,
-                { withCredentials: true }
+            const response = await api.post(
+                "/api/github/push",
+                payload
             );
 
             toast.success(response.data.message || "Pushed successfully");

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api.js";
 import Header from "./header";
 
 function History({theme,setTheme}){
@@ -11,9 +11,7 @@ function History({theme,setTheme}){
         try{
             setLoading(true);
             setErrorMessage("");
-            const response=await axios.get("http://localhost:5000/api/github/history?limit=12",{
-                withCredentials:true
-            });
+            const response=await api.get("/api/github/history?limit=12");
             setHistoryItems(response.data?.history || []);
         }
         catch(error){

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api.js";
 import toast from "react-hot-toast";
 import Header from "./header";
 import "../css/github.css";
@@ -15,9 +15,7 @@ function Github({ theme, setTheme }) {
     useEffect(() => {
         const loadConfig = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/github/config", {
-                    withCredentials: true
-                });
+                const response = await api.get("/api/github/config");
 
                 setRepoOwner(response.data.repoOwner || "");
                 setRepoName(response.data.repoName || "");
@@ -40,9 +38,7 @@ function Github({ theme, setTheme }) {
                 payload.token = token;
             }
 
-            const response = await axios.post("http://localhost:5000/api/github/config", payload, {
-                withCredentials: true
-            });
+            const response = await api.post("/api/github/config", payload);
 
             toast.success(response.data.message || "GitHub settings saved");
             if (token.trim()) {

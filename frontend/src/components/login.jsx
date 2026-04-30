@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Header from "./login-nav"
-import axios from "axios";
+import api from "../api.js";
 import toast from "react-hot-toast";
 import "../css/login.css"
 
@@ -13,9 +13,7 @@ function Login({theme, setTheme}){
     async function handleLogin(event){
         event.preventDefault();
         try{
-            const response=await axios.post("http://localhost:5000/api/auth/login",{username,password},{
-                withCredentials:true
-            });
+            const response=await api.post("/api/auth/login",{username,password});
             toast.success(response.data.message);
             navigate("/user");
         }

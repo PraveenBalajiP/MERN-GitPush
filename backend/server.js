@@ -7,9 +7,23 @@ import routes from './routes/routes.js';
 import githubRoutes from './routes/github.routes.js';
 
 const app=express();
+
+// Dynamic CORS configuration
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(cors({
-    origin:"http://localhost:5173",
-    credentials:true
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
 }));
 app.use(cookieParser());
 app.use(express.json());
