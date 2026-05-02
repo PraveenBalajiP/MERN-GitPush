@@ -41,16 +41,21 @@ function Register({ theme, setTheme }) {
             <Header theme={theme} setTheme={setTheme} />
             <section className="register-layout content-wrap">
                 <article className="glass-card register-copy">
-                    <p className="eyebrow">Create Account</p>
-                    <h1>Start your GitHub sync workspace</h1>
+                    <p className="eyebrow">Bootstrap Account</p>
+                    <h1>Initialize your workspace identity and start shipping entries.</h1>
                     <p>
-                        Create an account to save your workspace settings, organize your practice entries, and push updates to GitHub.
+                        Register once to create your profile in MongoDB, configure GitHub targets, and keep every learning entry versioned.
                     </p>
                     <ul className="register-points">
-                        <li>Register in a few quick steps</li>
-                        <li>Keep your GitHub settings in one place</li>
-                        <li>Move directly into the learning workspace</li>
+                        <li>Unique username and secure password validation</li>
+                        <li>One profile for all your repository pushes</li>
+                        <li>Instant jump from auth to workspace</li>
                     </ul>
+                    <div className="auth-terminal-log" aria-hidden="true">
+                        <p>$ auth register --username &lt;new-user&gt;</p>
+                        <p className="ok">db.insert(users): success</p>
+                        <p className="hint">next: login and configure /github</p>
+                    </div>
                 </article>
 
                 <form className="register glass-card" onSubmit={handleRegister}>
