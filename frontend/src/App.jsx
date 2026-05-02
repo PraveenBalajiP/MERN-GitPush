@@ -3,6 +3,7 @@ import VantaBackground from "./components/vantaRings";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./components/home";
+import Register from "./components/register";
 import Login from "./components/login";
 import About from "./components/about";
 import History from "./components/history";
@@ -26,6 +27,7 @@ function App() {
       <div className="app app-root">
         <Routes>
           <Route path="/" element={<Login theme={theme} setTheme={setTheme}/>} />
+          <Route path="/register" element={<Register theme={theme} setTheme={setTheme}/>} />
           <Route path="/home" element={
             <ProtectedRoute>
               <Home theme={theme} setTheme={setTheme}/>

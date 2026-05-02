@@ -12,6 +12,7 @@ const app=express();
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:3000',
+    'https://git-push-frontend.vercel.app',
     process.env.FRONTEND_URL,
 ].filter(Boolean);
 
@@ -36,10 +37,15 @@ app.use("/",routes);
 app.use("/api/github", githubRoutes);
 
 app.get("/",(req,res)=>{
-    res.send("Welcome to GitPush Studio API");
+    res.send("⚡Welcome to GitPush Studio API");
 });
 
-app.listen(PORT,()=>{
-    console.log(`Server is running on port ${PORT}`);
-    connectDB();
-});
+connectDB();
+
+if (process.env.VERCEL !== "1") {
+    app.listen(PORT,()=>{
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
+
+export default app;
