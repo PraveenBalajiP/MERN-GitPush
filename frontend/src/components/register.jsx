@@ -26,7 +26,7 @@ function Register({ theme, setTheme }) {
             });
 
             toast.success(response.data.message || "Registration Successful");
-            navigate("/");
+            navigate("/login");
         } catch (error) {
             if (error.response) {
                 toast.error(error.response.data.message || "Registration Failed");
@@ -85,7 +85,7 @@ function Register({ theme, setTheme }) {
                         <button type="submit">Create Account</button>
                     </div>
                     <p className="form-footer">
-                        Already have an account? <Link to="/">Sign in</Link>
+                        Already have an account? <Link to="/login">Sign in</Link>
                     </p>
                 </form>
             </section>

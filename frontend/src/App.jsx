@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import VantaBackground from "./components/vantaRings";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Landing from "./components/landing";
 import Home from "./components/home";
 import Register from "./components/register";
 import Login from "./components/login";
@@ -26,7 +27,8 @@ function App() {
       <VantaBackground theme={theme} />
       <div className="app app-root">
         <Routes>
-          <Route path="/" element={<Login theme={theme} setTheme={setTheme}/>} />
+          <Route path="/" element={<Landing theme={theme} setTheme={setTheme}/>} />
+          <Route path="/login" element={<Login theme={theme} setTheme={setTheme}/>} />
           <Route path="/register" element={<Register theme={theme} setTheme={setTheme}/>} />
           <Route path="/home" element={
             <ProtectedRoute>
