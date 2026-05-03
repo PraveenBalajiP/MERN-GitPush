@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function Landing({ theme, setTheme }) {
     function swapTheme() {
@@ -7,80 +8,101 @@ function Landing({ theme, setTheme }) {
         localStorage.setItem("theme", nextTheme);
     }
 
+    const fullText = `git add .
+> git commit -m "Auto sync"
+> git push origin main
+[main 4f2a1c] Auto sync
+ 1 file changed, 10 insertions(+)
+ Pushed to origin/main successfully.`;
+
+    const [typedText, setTypedText] = useState("");
+
+    useEffect(() => {
+        let index = 0;
+        const interval = setInterval(() => {
+            if (index < fullText.length) {
+                setTypedText((prev) => prev + fullText.charAt(index));
+                index++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 50); // fast typing speed
+        return () => clearInterval(interval);
+    }, [fullText]);
+
     return (
         <div className="landing-page page-shell">
             <header className="landing-nav glass-card">
                 <div className="landing-brand">
-                    <span className="landing-mark" aria-hidden="true">&gt;_</span>
+                    <span className="landing-mark" aria-hidden="true">
+                        <i className="fa-solid fa-terminal"></i>
+                    </span>
                     <div>
-                        <p className="eyebrow">GitPush Studio</p>
-                        <h1>Ship like a Unix terminal, not a form wizard.</h1>
+                        <p className="eyebrow">GIT AUTOMATION UI</p>
+                        <h1>MERN Studio</h1>
                     </div>
                 </div>
 
                 <div className="landing-nav-actions">
-                    <a href="https://github.com" target="_blank" rel="noreferrer" className="btn-ghost">
-                        <i className="fa-brands fa-github" aria-hidden="true"></i>
+                    <a href="https://github.com" target="_blank" rel="noreferrer" className="btn-ghost" style={{textDecoration: 'none'}}>
+                        <i className="fa-brands fa-github" aria-hidden="true" style={{marginRight: '8px'}}></i>
                         GitHub
                     </a>
                     <button type="button" className="btn-ghost theme-switch" onClick={swapTheme}>
-                        {theme === "light" ? "Dark" : "Light"}
+                        <i className={`fa-solid ${theme === 'light' ? 'fa-moon' : 'fa-sun'}`}></i>
                     </button>
-                    <Link to="/login" className="btn-ghost">Login</Link>
-                    <Link to="/register" className="btn-primary">Register</Link>
+                    <Link to="/login" className="btn-ghost" style={{textDecoration: 'none'}}>Login</Link>
+                    <Link to="/register" className="btn-primary" style={{textDecoration: 'none'}}>Register</Link>
                 </div>
             </header>
 
-            <section className="landing-hero content-wrap">
-                <article className="glass-card terminal-card">
-                    <div className="terminal-topbar">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <p>gitpush@workspace:~</p>
-                    </div>
-                    <div className="terminal-body">
-                        <p><span className="prompt">$</span> git status</p>
-                        <p className="terminal-ok">On branch learning/main</p>
-                        <p className="terminal-ok">Your notes are ready to push.</p>
-                        <p><span className="prompt">$</span> npm run sync:github</p>
-                        <p className="terminal-ok">Pushing question.txt + answer.txt</p>
-                        <p className="terminal-accent">Done in 1.4s</p>
-                        <p><span className="prompt">$</span> open /dashboard</p>
-                    </div>
-                </article>
-
-                <article className="glass-card landing-copy-card">
-                    <p className="eyebrow">Developer First</p>
-                    <h2>Write answers, version everything, and keep your flow state intact.</h2>
-                    <p>
-                        Built for students and builders who think in commits. Draft your entries,
-                        keep a clean history, and push directly to your repository with one workspace.
+            <main className="bento-grid content-wrap">
+                <article className="glass-card bento-item bento-hero">
+                    <p className="eyebrow">THE ULTIMATE GIT PIPELINE</p>
+                    <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)", margin: "0.5rem 0", lineHeight: "1.2" }}>
+                        Replace complex terminal workflows with a <span className="highlight">single click</span>.
+                    </h2>
+                    <p style={{ fontSize: "1.1rem", margin: "1.5rem 0", lineHeight: "1.6" }}>
+                        Built for developers who want to avoid the tedious cycle of staging, committing, and pushing. We map out your entire <span className="highlight">Git Flow</span> into easy, actionable workspace interfaces.
                     </p>
-                    <div className="landing-cta-group">
-                        <Link to="/register" className="btn-primary">Create Free Account</Link>
-                        <Link to="/login" className="btn-ghost">I already have an account</Link>
+                    <div className="landing-cta-group" style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+                        <Link to="/register" className="btn-primary" style={{textDecoration: 'none'}}>Get Started Demo</Link>
                     </div>
                 </article>
-            </section>
 
-            <section className="landing-panels">
-                <article className="glass-card panel-card">
-                    <p className="panel-label">01</p>
-                    <h3>Code-like workspace</h3>
-                    <p>Terminal-inspired layout, focused writing blocks, and no visual clutter.</p>
+                <article className="glass-card bento-item bento-terminal">
+                    <div className="terminal-topbar" style={{ display: 'flex', gap: '8px', borderBottom: '2px solid var(--text-primary)', paddingBottom: '1rem', marginBottom: '1rem' }}>
+                        <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--danger)', border: '2px solid var(--text-primary)' }}></div>
+                        <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#fbbf24', border: '2px solid var(--text-primary)' }}></div>
+                        <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--success)', border: '2px solid var(--text-primary)' }}></div>
+                    </div>
+                    <div className="terminal-body" style={{ minHeight: '150px' }}>
+                        <p style={{ margin: '0 0 0.5rem' }}>
+                            <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>~ ❯</span>{" "}
+                            {typedText}
+                            <span className="cursor-blink">|</span>
+                        </p>
+                    </div>
                 </article>
-                <article className="glass-card panel-card">
-                    <p className="panel-label">02</p>
-                    <h3>GitHub native rhythm</h3>
-                    <p>Configure repository settings once, then push your entries as clean commits.</p>
+
+                <article className="glass-card bento-item bento-step">
+                    <h1 style={{ margin: "0 0 1rem", fontSize: "3rem", color: "var(--text-primary)", display: 'flex', alignItems: 'center', gap: '1rem' }}>01 <i className="fa-brands fa-github"></i></h1>
+                    <h3>Integrate Hub</h3>
+                    <p>Connect your personal access tokens securely. Select target repositories.</p>
                 </article>
-                <article className="glass-card panel-card">
-                    <p className="panel-label">03</p>
-                    <h3>Unix style clarity</h3>
-                    <p>Readable monospace typography, subtle scanline texture, and tactile motion.</p>
+
+                <article className="glass-card bento-item bento-step">
+                    <h1 style={{ margin: "0 0 1rem", fontSize: "3rem", color: "var(--text-primary)", display: 'flex', alignItems: 'center', gap: '1rem' }}>02 <i className="fa-solid fa-code-commit"></i></h1>
+                    <h3>Draft Commits</h3>
+                    <p>Use our dedicated workspace forms to draft changes, write commit messages, and document answers.</p>
                 </article>
-            </section>
+
+                <article className="glass-card bento-item bento-step bento-step-wide">
+                    <h1 style={{ margin: "0 0 1rem", fontSize: "3rem", color: "var(--text-primary)", display: 'flex', alignItems: 'center', gap: '1rem' }}>03 <i className="fa-solid fa-rocket"></i></h1>
+                    <h3>Combine & Push</h3>
+                    <p>Hit the automated action. Your <span className="highlight">add</span>, <span className="highlight">commit</span>, and <span className="highlight">push</span> are batched into one seamless script.</p>
+                </article>
+            </main>
         </div>
     );
 }
