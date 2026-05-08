@@ -66,24 +66,15 @@ function Home({ theme, setTheme }) {
                         <p>
                             Build your Q&amp;A notes, push to GitHub instantly, and keep your project history organized from one dashboard.
                         </p>
-                        <div style={{ display: "flex", gap: "0.65rem", flexWrap: "wrap", marginTop: "1.25rem" }}>
-                            <Link className="kl-btn-solid" style={{ textDecoration: "none", display: "inline-flex" }} to="/user">
-                                Start Writing
+                        <div className="kl-home-actions">
+                            <Link className="kl-btn-solid kl-home-cta" to="/user">
+                                <i className="fa-solid fa-pen"/>Start Writing
                             </Link>
                             <Link
                                 to="/github"
-                                style={{
-                                    textDecoration: "none",
-                                    fontSize: "0.72rem",
-                                    fontWeight: 700,
-                                    letterSpacing: "0.14em",
-                                    textTransform: "uppercase",
-                                    color: "#fff",
-                                    border: "1px solid rgba(255,255,255,0.35)",
-                                    padding: "0.75rem 1rem",
-                                }}
+                                className="kl-btn-outline kl-home-cta"
                             >
-                                Connect GitHub
+                                <i className="fa-brands fa-github"/>Connect GitHub
                             </Link>
                         </div>
                     </article>

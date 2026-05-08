@@ -144,28 +144,6 @@ function Landing() {
                     </div>
                 </div>
             </section>
-
-            <section className="kl-gallery" aria-label="Project gallery">
-                <figure>
-                    <img src={IMG.g1} alt="Developer working at a laptop" loading="lazy" />
-                </figure>
-                <figure>
-                    <img src={IMG.g2} alt="Code editor on a large monitor" loading="lazy" />
-                </figure>
-                <figure>
-                    <img src={IMG.g3} alt="Clean terminal workflow" loading="lazy" />
-                </figure>
-                <figure>
-                    <img src={IMG.g4} alt="Pair programming session" loading="lazy" />
-                </figure>
-                <figure>
-                    <img src={IMG.g5} alt="Git commit history on screen" loading="lazy" />
-                </figure>
-                <figure>
-                    <img src={IMG.g6} alt="Workspace setup with notebook and laptop" loading="lazy" />
-                </figure>
-            </section>
-
             <div className="footer-shell">
                 <Footer />
             </div>

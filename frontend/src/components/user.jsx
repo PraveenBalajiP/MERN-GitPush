@@ -126,6 +126,10 @@ function User({ theme, setTheme }) {
         }));
     }
 
+    function removeMultipleFile(indexToRemove) {
+        setMultipleFiles((prev) => prev.filter((_, index) => index !== indexToRemove));
+    }
+
     const activeTextEntry = multipleTextEntries[activeTextIndex] || { name: "", content: "" };
 
     return (
@@ -173,7 +177,7 @@ function User({ theme, setTheme }) {
                             type="text"
                             value={commitMessage}
                             onChange={(e) => setCommitMessage(e.target.value)}
-                            placeholder="example: Add day-12 question and answer"
+                            placeholder="Enter Commit Message"
                         />
                         <input
                             id="entryFolderName"
@@ -181,35 +185,33 @@ function User({ theme, setTheme }) {
                             type="text"
                             value={entryFolderName}
                             onChange={(e) => setEntryFolderName(e.target.value)}
-                            placeholder="example: arrays-day-12"
+                            placeholder="Enter Folder Name"
                         />
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem', marginBottom: '1rem', borderTop: '1px solid rgba(255,255,255,0.14)', paddingTop: '1.25rem' }}>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.7rem 1.25rem', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.22)', background: entryMode === 'qa' ? 'linear-gradient(135deg, var(--accent-strong), var(--accent))' : 'rgba(255,255,255,0.4)', color: entryMode === 'qa' ? '#ffffff' : 'var(--text-primary)', fontFamily: 'var(--font-code)', fontSize: '0.85rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', transition: 'all 0.2s ease', boxShadow: entryMode === 'qa' ? 'var(--glass-shadow)' : 'none' }}>
+                    <div className="workspace-mode-row">
+                        <label className={`workspace-mode-btn ${entryMode === 'qa' ? 'active' : ''}`}>
                                 <input
                                     type="radio"
                                     name="entryMode"
                                     value="qa"
                                     checked={entryMode === "qa"}
                                     onChange={() => handleEntryModeChange("qa")}
-                                    style={{ margin: 0, accentColor: "currentColor", display: 'none' }}
+                                    className="workspace-mode-input"
                                 />
                                 Question + Answer
                             </label>
-                            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.7rem 1.25rem', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.22)', background: entryMode === 'multiple' ? 'linear-gradient(135deg, var(--accent-strong), var(--accent))' : 'rgba(255,255,255,0.4)', color: entryMode === 'multiple' ? '#ffffff' : 'var(--text-primary)', fontFamily: 'var(--font-code)', fontSize: '0.85rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', transition: 'all 0.2s ease', boxShadow: entryMode === 'multiple' ? 'var(--glass-shadow)' : 'none' }}>
+                            <label className={`workspace-mode-btn ${entryMode === 'multiple' ? 'active' : ''}`}>
                                 <input
                                     type="radio"
                                     name="entryMode"
                                     value="multiple"
                                     checked={entryMode === "multiple"}
                                     onChange={() => handleEntryModeChange("multiple")}
-                                    style={{ margin: 0, accentColor: "currentColor", display: 'none' }}
+                                    className="workspace-mode-input"
                                 />
                                 Multiple Entries
                             </label>
-                        </div>
                     </div>
 
                     {entryMode === "qa" && <div className="klipsan-fields">
@@ -220,8 +222,8 @@ function User({ theme, setTheme }) {
                             placeholder="Type the question here"
                             style={{ minHeight: '130px', resize: 'vertical' }}
                         />
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                            <label style={{ display: 'inline-flex', alignItems: 'center', padding: '0.5rem 1.1rem', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '999px', fontFamily: 'var(--font-code)', fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.05em', background: 'rgba(255,255,255,0.3)', cursor: 'pointer', color: 'var(--text-secondary)' }} htmlFor="questionFile">
+                        <div className="workspace-upload-row">
+                            <label className="workspace-upload-btn" htmlFor="questionFile">
                                 Upload question file
                             </label>
                             <input
@@ -232,7 +234,7 @@ function User({ theme, setTheme }) {
                                 style={{ display: 'none' }}
                                 onChange={(e) => setQuestionFile(e.target.files?.[0] || null)}
                             />
-                            <span style={{ fontFamily: 'var(--font-code)', fontSize: '0.75rem', color: 'var(--text-primary)', fontWeight: 'bold' }}>{questionFile ? `Selected: ${questionFile.name}` : "No file selected"}</span>
+                            <span className="workspace-upload-meta">{questionFile ? `Selected: ${questionFile.name}` : "No file selected"}</span>
                         </div>
 
                         <textarea
@@ -242,8 +244,8 @@ function User({ theme, setTheme }) {
                             placeholder="Type the answer here"
                             style={{ minHeight: '130px', resize: 'vertical' }}
                         />
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                            <label style={{ display: 'inline-flex', alignItems: 'center', padding: '0.5rem 1.1rem', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '999px', fontFamily: 'var(--font-code)', fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.05em', background: 'rgba(255,255,255,0.3)', cursor: 'pointer', color: 'var(--text-secondary)' }} htmlFor="answerFile">
+                        <div className="workspace-upload-row">
+                            <label className="workspace-upload-btn" htmlFor="answerFile">
                                 Upload answer file
                             </label>
                             <input
@@ -254,18 +256,18 @@ function User({ theme, setTheme }) {
                                 style={{ display: 'none' }}
                                 onChange={(e) => setAnswerFile(e.target.files?.[0] || null)}
                             />
-                            <span style={{ fontFamily: 'var(--font-code)', fontSize: '0.75rem', color: 'var(--text-primary)', fontWeight: 'bold' }}>{answerFile ? `Selected: ${answerFile.name}` : "No file selected"}</span>
+                            <span className="workspace-upload-meta">{answerFile ? `Selected: ${answerFile.name}` : "No file selected"}</span>
                         </div>
                     </div>}
 
                     {entryMode === "multiple" && (
-                        <div className="klipsan-fields" style={{ background: 'rgba(255,255,255,0.2)', padding: '1.25rem', borderRadius: 'calc(var(--border-radius) - 8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
-                            <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.14)', marginBottom: '0.5rem' }}>
+                        <div className="klipsan-fields workspace-multi-panel">
+                            <div className="workspace-tab-row">
                                 {multipleTextEntries.map((entry, index) => (
                                     <button
                                         key={`tab-${index}`}
                                         type="button"
-                                        style={{ padding: '0.5rem 1rem', whiteSpace: 'nowrap', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.14)', background: index === activeTextIndex ? 'var(--text-primary)' : 'rgba(255,255,255,0.5)', color: index === activeTextIndex ? 'var(--text-inverse)' : 'var(--text-primary)', fontFamily: 'var(--font-code)', fontSize: '0.8rem', fontWeight: 'bold', cursor: 'pointer', textTransform: 'uppercase' }}
+                                        className={`workspace-tab-btn ${index === activeTextIndex ? 'active' : ''}`}
                                         onClick={() => setActiveTextIndex(index)}
                                     >
                                         Text {index + 1}
@@ -289,17 +291,17 @@ function User({ theme, setTheme }) {
                                 style={{ minHeight: '130px', resize: 'vertical' }}
                             />
 
-                            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', marginBottom: '1rem' }}>
-                                <button type="button" onClick={addMultipleTextEntry} style={{ flex: 1, padding: '0.6rem', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', border: 'none', fontFamily: 'var(--font-code)', fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', cursor: 'pointer', color: 'var(--text-primary)' }}>
+                            <div className="workspace-file-actions">
+                                <button type="button" className="workspace-action-btn" onClick={addMultipleTextEntry}>
                                    + Add Text File
                                 </button>
-                                <button type="button" onClick={deleteActiveTextEntry} style={{ flex: 1, padding: '0.6rem', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', border: 'none', fontFamily: 'var(--font-code)', fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', cursor: 'pointer', color: 'var(--danger)' }}>
+                                <button type="button" className="workspace-action-btn danger" onClick={deleteActiveTextEntry}>
                                    Delete Text File
                                 </button>
                             </div>
 
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.14)', paddingTop: '1.25rem' }}>
-                                <label style={{ display: 'inline-flex', alignItems: 'center', padding: '0.6rem 1.1rem', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '999px', fontFamily: 'var(--font-code)', fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.05em', background: 'rgba(255,255,255,0.4)', cursor: 'pointer', color: 'var(--text-primary)' }} htmlFor="multipleFiles">
+                            <div className="workspace-upload-row">
+                                <label className="workspace-upload-btn" htmlFor="multipleFiles">
                                     Upload multiple files
                                 </label>
                                 <input
@@ -310,15 +312,25 @@ function User({ theme, setTheme }) {
                                     style={{ display: 'none' }}
                                     onChange={(e) => setMultipleFiles(Array.from(e.target.files || []))}
                                 />
-                                <span style={{ fontFamily: 'var(--font-code)', fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--text-secondary)' }}>
+                                <span className="workspace-upload-meta">
                                     {multipleFiles.length > 0 ? `${multipleFiles.length} file(s) selected` : "No files selected"}
                                 </span>
                             </div>
-                            
+
                             {multipleFiles.length > 0 && (
-                                <ul style={{ margin: '0.75rem 0 0', paddingLeft: '1.5rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-code)', fontSize: '0.75rem', display: 'grid', gap: '0.25rem' }}>
-                                    {multipleFiles.map((file) => (
-                                        <li key={`${file.name}-${file.lastModified}`}>{file.name}</li>
+                                <ul className="workspace-file-list">
+                                    {multipleFiles.map((file, index) => (
+                                        <li key={`${file.name}-${file.lastModified}`} className="workspace-file-item">
+                                            <span>{file.name}</span>
+                                            <button
+                                                type="button"
+                                                className="workspace-remove-btn"
+                                                onClick={() => removeMultipleFile(index)}
+                                                aria-label={`Remove ${file.name}`}
+                                            >
+                                                Remove
+                                            </button>
+                                        </li>
                                     ))}
                                 </ul>
                             )}
