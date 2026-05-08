@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import VantaBackground from "./components/vantaRings";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Landing from "./components/landing";
@@ -11,6 +10,7 @@ import History from "./components/history";
 import User from "./components/user";
 import GitHub from "./components/github";
 import "./App.css";
+import "./css/klipsan.css";
 
 function App() {
   const [theme, setTheme] = useState(
@@ -22,12 +22,15 @@ function App() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    document.documentElement.setAttribute("data-shell", "klipsan");
+  }, []);
+
   return (
     <>
-      <VantaBackground theme={theme} />
       <div className="app app-root">
         <Routes>
-          <Route path="/" element={<Landing theme={theme} setTheme={setTheme}/>} />
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login theme={theme} setTheme={setTheme}/>} />
           <Route path="/register" element={<Register theme={theme} setTheme={setTheme}/>} />
           <Route path="/home" element={

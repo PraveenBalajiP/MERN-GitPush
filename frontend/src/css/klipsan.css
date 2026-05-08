@@ -1,0 +1,788 @@
+/* Klipsan (Squarespace) — layout, type, and sections */
+
+:root {
+    --kl-black: #0a0a0a;
+    --kl-black-soft: #111111;
+    --kl-white: #ffffff;
+    --kl-muted: rgba(255, 255, 255, 0.58);
+    --kl-line: rgba(255, 255, 255, 0.14);
+    --kl-max: 1180px;
+    --kl-pad: clamp(1.25rem, 4vw, 2.5rem);
+    --kl-display: "Bebas Neue", "Impact", sans-serif;
+    --kl-body: "DM Sans", system-ui, sans-serif;
+}
+
+[data-shell="klipsan"] .klipsan-page {
+    --font-display: var(--kl-display);
+    --font-body: var(--kl-body);
+}
+
+.klipsan-page {
+    font-family: var(--kl-body);
+    color: var(--kl-white);
+    background: var(--kl-black);
+}
+
+.kl-inner {
+    width: min(var(--kl-max), 100%);
+    margin-inline: auto;
+    padding-inline: var(--kl-pad);
+}
+
+/* Top bar — minimal, high contrast */
+.kl-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10, 10, 10, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--kl-line);
+}
+
+.kl-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1rem;
+}
+
+.kl-wordmark {
+    font-family: var(--kl-display);
+    font-size: clamp(1.9rem, 4vw, 2.35rem);
+    letter-spacing: 0.08em;
+    color: var(--kl-white);
+    text-decoration: none;
+}
+
+.kl-wordmark:hover {
+    color: var(--kl-white);
+    opacity: 0.92;
+}
+
+.kl-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.kl-nav a,
+.kl-nav button {
+    font-family: var(--kl-body);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--kl-white);
+    text-decoration: none;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.kl-nav a:hover,
+.kl-nav button:hover {
+    border-color: var(--kl-line);
+}
+
+.kl-btn-solid {
+    border-color: var(--kl-white) !important;
+    background: var(--kl-white) !important;
+    color: var(--kl-black) !important;
+}
+
+.kl-btn-solid:hover {
+    opacity: 0.92;
+}
+
+@media (max-width: 720px) {
+    .kl-header-inner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .kl-nav {
+        justify-content: flex-start;
+    }
+}
+
+.kl-chip {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 0.4rem 0.75rem;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.kl-page {
+    margin-top: 1rem;
+    padding-bottom: 2rem;
+    display: grid;
+    gap: 2px;
+}
+
+/* Hero */
+.kl-hero {
+    position: relative;
+    min-height: min(92vh, 820px);
+    display: grid;
+    align-items: end;
+    isolation: isolate;
+}
+
+.kl-hero-media {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+}
+
+.kl-hero-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(10, 10, 10, 0.15) 0%,
+        rgba(10, 10, 10, 0.55) 45%,
+        rgba(10, 10, 10, 0.92) 100%
+    );
+}
+
+.kl-hero-copy {
+    position: relative;
+    z-index: 1;
+    padding-block: clamp(3rem, 12vw, 6rem);
+}
+
+.kl-hero h1 {
+    margin: 0;
+    font-family: var(--kl-display);
+    font-size: clamp(3.2rem, 10vw, 6.5rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+    color: var(--kl-white);
+    max-width: 14ch;
+}
+
+.kl-deck {
+    margin: 1.75rem 0 0;
+    max-width: 36rem;
+    font-size: clamp(1rem, 2.2vw, 1.15rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.45;
+}
+
+.kl-lede {
+    margin: 1rem 0 0;
+    max-width: 40rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--kl-muted);
+}
+
+/* Sections */
+.kl-section {
+    padding-block: clamp(3rem, 8vw, 5rem);
+    border-top: 1px solid var(--kl-line);
+    background: var(--kl-black);
+}
+
+.kl-section.alt {
+    background: var(--kl-black-soft);
+}
+
+.kl-kicker {
+    margin: 0 0 1rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--kl-muted);
+}
+
+.kl-section h2 {
+    margin: 0 0 1rem;
+    font-family: var(--kl-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: 0.06em;
+    font-weight: 400;
+    color: var(--kl-white);
+}
+
+.kl-section p {
+    margin: 0;
+    max-width: 46rem;
+    color: var(--kl-muted);
+    line-height: 1.65;
+    font-size: 1rem;
+}
+
+.kl-dot-row {
+    margin-top: 1.75rem;
+    display: grid;
+    gap: 0.65rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.82);
+    letter-spacing: 0.02em;
+}
+
+@media (min-width: 720px) {
+    .kl-dot-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.kl-dot-row span {
+    display: block;
+    padding-left: 0.15rem;
+}
+
+.kl-dot-row span::before {
+    content: "• ";
+    opacity: 0.55;
+}
+
+/* Split band */
+.kl-split {
+    display: grid;
+    gap: 0;
+}
+
+@media (min-width: 900px) {
+    .kl-split {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+        min-height: min(520px, 70vh);
+    }
+}
+
+.kl-split-copy {
+    padding: clamp(2rem, 6vw, 4rem) var(--kl-pad);
+    display: grid;
+    align-content: center;
+    gap: 1rem;
+    background: var(--kl-black-soft);
+    border-bottom: 1px solid var(--kl-line);
+}
+
+@media (min-width: 900px) {
+    .kl-split-copy {
+        border-bottom: none;
+        border-right: 1px solid var(--kl-line);
+        padding-inline: clamp(2rem, 5vw, 4rem);
+    }
+}
+
+.kl-split-media {
+    min-height: 280px;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Quote */
+.kl-quote {
+    padding-block: clamp(3rem, 10vw, 5rem);
+    text-align: center;
+    border-top: 1px solid var(--kl-line);
+    background: radial-gradient(
+            ellipse at center,
+            rgba(255, 255, 255, 0.06) 0%,
+            transparent 65%
+        ),
+        var(--kl-black);
+}
+
+.kl-quote-mark {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 8vw, 5rem);
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.35);
+    margin-bottom: 0.5rem;
+}
+
+.kl-quote blockquote {
+    margin: 0 auto;
+    max-width: 42rem;
+    font-family: var(--kl-display);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+    color: var(--kl-white);
+}
+
+.kl-quote cite {
+    display: block;
+    margin-top: 1.25rem;
+    font-family: var(--kl-body);
+    font-size: 0.85rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--kl-muted);
+}
+
+/* Locations */
+.kl-locations {
+    display: grid;
+    gap: 1.5rem;
+}
+
+@media (min-width: 720px) {
+    .kl-locations {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.kl-loc-card {
+    padding: 1.75rem;
+    border: 1px solid var(--kl-line);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.kl-loc-card h3 {
+    margin: 0 0 0.75rem;
+    font-family: var(--kl-display);
+    font-size: 1.65rem;
+    letter-spacing: 0.08em;
+    font-weight: 400;
+}
+
+.kl-loc-card p {
+    margin: 0;
+    color: var(--kl-muted);
+    line-height: 1.55;
+    white-space: pre-line;
+}
+
+/* Gallery */
+.kl-gallery {
+    display: grid;
+    gap: 2px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 900px) {
+    .kl-gallery {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.kl-gallery figure {
+    margin: 0;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #151515;
+}
+
+.kl-gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Footer strip */
+.kl-footer {
+    border-top: 1px solid var(--kl-line);
+    padding-block: 1.75rem;
+    background: var(--kl-black);
+}
+
+.kl-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kl-footer small {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--kl-muted);
+}
+
+/* Auth pages — split editorial + form */
+.klipsan-auth-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--kl-black);
+    color: var(--kl-white);
+}
+
+.klipsan-auth-grid {
+    flex: 1;
+    width: min(var(--kl-max), 100%);
+    margin-inline: auto;
+    padding: clamp(1.25rem, 4vw, 2rem) var(--kl-pad) clamp(2rem, 6vw, 3rem);
+    display: grid;
+    gap: 2px;
+    background: var(--kl-line);
+    border: 1px solid var(--kl-line);
+}
+
+@media (min-width: 900px) {
+    .klipsan-auth-grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+    }
+}
+
+.klipsan-auth-copy,
+.klipsan-auth-form {
+    background: var(--kl-black-soft);
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.klipsan-auth-visual {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--kl-line);
+}
+
+.klipsan-auth-copy h1 {
+    margin: 0;
+    font-family: var(--kl-display);
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
+    letter-spacing: 0.06em;
+    font-weight: 400;
+    line-height: 1.05;
+}
+
+.klipsan-auth-copy p {
+    margin: 0;
+    color: var(--kl-muted);
+    line-height: 1.65;
+}
+
+.klipsan-auth-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.65rem;
+}
+
+.klipsan-auth-list li {
+    padding-left: 1rem;
+    border-left: 2px solid rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.klipsan-auth-form h2 {
+    margin: 0;
+    font-family: var(--kl-display);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    letter-spacing: 0.06em;
+    font-weight: 400;
+}
+
+.klipsan-fields {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.klipsan-input {
+    width: 100%;
+    padding: 0.95rem 1rem;
+    border-radius: 2px;
+    border: 1px solid var(--kl-line);
+    background: rgba(0, 0, 0, 0.35);
+    color: var(--kl-white);
+    font-family: var(--kl-body);
+    font-size: 0.95rem;
+}
+
+.klipsan-input::placeholder {
+    color: rgba(255, 255, 255, 0.38);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+}
+
+.klipsan-input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+textarea.klipsan-input {
+    min-height: 6rem;
+    resize: vertical;
+}
+
+.klipsan-button {
+    margin-top: 0.25rem;
+    padding: 0.95rem 1.25rem;
+    border-radius: 2px;
+    border: 1px solid var(--kl-white);
+    background: var(--kl-white);
+    color: var(--kl-black);
+    font-family: var(--kl-body);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.klipsan-button:hover {
+    opacity: 0.92;
+}
+
+.klipsan-button.ghost {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.klipsan-button.ghost:hover {
+    background: rgba(255, 255, 255, 0.06);
+    opacity: 1;
+}
+
+.timeline {
+    display: grid;
+    gap: 2px;
+    width: 100%;
+}
+
+.timeline-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.timeline-item > span:first-of-type {
+    font-family: var(--kl-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.35);
+    line-height: 1;
+}
+
+.timeline-item h3 {
+    margin: 0;
+    font-family: var(--kl-body);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.timeline-item p {
+    margin: 0.35rem 0 0;
+    font-size: 0.92rem;
+    color: var(--kl-muted);
+}
+
+.timeline-link {
+    display: inline-block;
+    margin-top: 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+.klipsan-auth-foot {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--kl-muted);
+}
+
+.klipsan-auth-foot a {
+    color: var(--kl-white);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+/* Legacy utility aliases used by About / inner pages */
+.klipsan-page.inner-app {
+    padding-bottom: 2rem;
+}
+
+.klipsan-stack {
+    display: grid;
+    gap: 2px;
+    margin-top: 0;
+}
+
+.klipsan-hero {
+    display: grid;
+    gap: 2px;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+    .klipsan-hero {
+        grid-template-columns: 1.05fr 0.95fr;
+    }
+}
+
+.klipsan-copy {
+    background: var(--kl-black-soft);
+    border: 1px solid var(--kl-line);
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.klipsan-copy h1 {
+    margin: 0;
+    font-family: var(--kl-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: 0.06em;
+    font-weight: 400;
+    color: var(--kl-white);
+}
+
+.klipsan-copy p {
+    margin: 0.85rem 0 0;
+    color: var(--kl-muted);
+    line-height: 1.65;
+}
+
+.klipsan-image {
+    min-height: 280px;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--kl-line);
+}
+
+.klipsan-grid-3 {
+    display: grid;
+    gap: 2px;
+}
+
+@media (min-width: 768px) {
+    .klipsan-grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.klipsan-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--kl-line);
+    padding: 1.75rem;
+}
+
+.klipsan-card h3 {
+    margin: 0;
+    font-family: var(--kl-display);
+    font-size: 1.45rem;
+    letter-spacing: 0.06em;
+    font-weight: 400;
+    color: var(--kl-white);
+}
+
+.klipsan-card p {
+    margin: 0.75rem 0 0;
+    color: var(--kl-muted);
+    line-height: 1.6;
+}
+
+/* Match Klipsan chrome on legacy Header / login-nav (header.css) */
+[data-shell="klipsan"] .main {
+    background: rgba(10, 10, 10, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: none;
+    animation: none;
+}
+
+[data-shell="klipsan"] .brand-mark {
+    border-radius: 2px;
+    background: #ffffff;
+    color: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: none;
+    font-family: var(--kl-display);
+    letter-spacing: 0.06em;
+}
+
+[data-shell="klipsan"] .brand-name {
+    font-family: var(--kl-display);
+    font-size: 1.35rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+[data-shell="klipsan"] .brand-tag {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+[data-shell="klipsan"] .nav a {
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-radius: 2px;
+}
+
+[data-shell="klipsan"] .nav a:hover,
+[data-shell="klipsan"] .nav a:active {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: none;
+    color: #ffffff;
+}
+
+[data-shell="klipsan"] .mobile-nav .nav {
+    background: #111111;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: none;
+}
+
+[data-shell="klipsan"] .toggle-btn,
+[data-shell="klipsan"] .git-btn,
+[data-shell="klipsan"] .nav-toggle {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    border-radius: 2px;
+    box-shadow: none;
+}
+
+[data-shell="klipsan"] .toggle-btn:hover,
+[data-shell="klipsan"] .git-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    box-shadow: none;
+}
+
+[data-shell="klipsan"] .nav-toggle.open {
+    background: #ffffff;
+    color: #0a0a0a;
+}

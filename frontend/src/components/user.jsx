@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import api from "../api.js";
 import toast from "react-hot-toast";
 import Header from "./header";
-import "../css/user.css";
+import Footer from "./footer";
+import "../css/klipsan.css";
 
 function User({ theme, setTheme }) {
     const [entryMode, setEntryMode] = useState("qa");
@@ -128,34 +129,55 @@ function User({ theme, setTheme }) {
     const activeTextEntry = multipleTextEntries[activeTextIndex] || { name: "", content: "" };
 
     return (
-        <div className="user-page page-shell">
+        <div className="user-page page-shell klipsan-auth-page">
             <Header theme={theme} setTheme={setTheme} />
 
-            <section className="content-wrap">
-                <form className="user-card glass-card" onSubmit={pushToGithub}>
-                    <div className="header-1">
-                        <div className="header-1-1">
-                            <p className="eyebrow">Workspace</p>
-                            <h1>User Workspace</h1>
-                            <p>Write your question and answer, upload files, then push directly to your configured GitHub repository.</p>
-                        </div>
-                        <button type="button" className="secondary open-settings-btn" onClick={() => navigate("/github")}>Open GitHub Settings</button>
+            <section className="klipsan-auth-grid">
+                <article className="klipsan-auth-copy">
+                    <div
+                        className="klipsan-auth-visual"
+                        style={{
+                            backgroundImage:
+                                "url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80')",
+                        }}
+                        aria-hidden="true"
+                    />
+                    <div>
+                        <p className="kl-kicker">Workspace</p>
+                        <h1>User Workspace</h1>
+                        <p>Write your question and answer, upload files, then push directly to your configured GitHub repository.</p>
                     </div>
-                    <div className="qa-field">
-                        <label htmlFor="commitMessage">Commit Message (optional)</label>
+                    <ul className="klipsan-auth-list">
+                        <li>Question + answer workflow</li>
+                        <li>Multiple file attachments</li>
+                        <li>Instant GitHub synchronization</li>
+                    </ul>
+                    <button
+                        type="button"
+                        className="klipsan-button ghost"
+                        style={{ marginTop: "auto", width: "fit-content" }}
+                        onClick={() => navigate("/github")}
+                    >
+                        Open GitHub Settings
+                    </button>
+                </article>
+
+                <form className="klipsan-auth-form" onSubmit={pushToGithub} style={{ justifyContent: "flex-start" }}>
+                    <p className="kl-kicker">Draft entry</p>
+                    <h2 style={{ marginBottom: "0.5rem" }}>User Workspace</h2>
+
+                    <div className="klipsan-fields">
                         <input
                             id="commitMessage"
+                            className="klipsan-input"
                             type="text"
                             value={commitMessage}
                             onChange={(e) => setCommitMessage(e.target.value)}
                             placeholder="example: Add day-12 question and answer"
                         />
-                    </div>
-
-                    <div className="qa-field">
-                        <label htmlFor="entryFolderName">Enter Folder Name (optional)</label>
                         <input
                             id="entryFolderName"
+                            className="klipsan-input"
                             type="text"
                             value={entryFolderName}
                             onChange={(e) => setEntryFolderName(e.target.value)}
@@ -163,129 +185,138 @@ function User({ theme, setTheme }) {
                         />
                     </div>
 
-                    <div className="qa-field">
-                        <p className="mode-title">Entry Type</p>
-                        <div className="entry-mode-group">
-                            <label className="entry-mode-option">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem', marginBottom: '1rem', borderTop: '1px solid rgba(255,255,255,0.14)', paddingTop: '1.25rem' }}>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.7rem 1.25rem', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.22)', background: entryMode === 'qa' ? 'linear-gradient(135deg, var(--accent-strong), var(--accent))' : 'rgba(255,255,255,0.4)', color: entryMode === 'qa' ? '#ffffff' : 'var(--text-primary)', fontFamily: 'var(--font-code)', fontSize: '0.85rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', transition: 'all 0.2s ease', boxShadow: entryMode === 'qa' ? 'var(--glass-shadow)' : 'none' }}>
                                 <input
                                     type="radio"
                                     name="entryMode"
                                     value="qa"
                                     checked={entryMode === "qa"}
                                     onChange={() => handleEntryModeChange("qa")}
+                                    style={{ margin: 0, accentColor: "currentColor", display: 'none' }}
                                 />
                                 Question + Answer
                             </label>
-                            <label className="entry-mode-option">
+                            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.7rem 1.25rem', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.22)', background: entryMode === 'multiple' ? 'linear-gradient(135deg, var(--accent-strong), var(--accent))' : 'rgba(255,255,255,0.4)', color: entryMode === 'multiple' ? '#ffffff' : 'var(--text-primary)', fontFamily: 'var(--font-code)', fontSize: '0.85rem', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', transition: 'all 0.2s ease', boxShadow: entryMode === 'multiple' ? 'var(--glass-shadow)' : 'none' }}>
                                 <input
                                     type="radio"
                                     name="entryMode"
                                     value="multiple"
                                     checked={entryMode === "multiple"}
                                     onChange={() => handleEntryModeChange("multiple")}
+                                    style={{ margin: 0, accentColor: "currentColor", display: 'none' }}
                                 />
                                 Multiple Entries
                             </label>
                         </div>
                     </div>
 
-                    {entryMode === "qa" && <>
-                    <div className="qa-field">
-                        <label htmlFor="question">Question</label>
+                    {entryMode === "qa" && <div className="klipsan-fields">
                         <textarea
-                            id="question"
+                            className="klipsan-input"
                             value={question}
                             onChange={(e) => setQuestion(e.target.value)}
                             placeholder="Type the question here"
+                            style={{ minHeight: '130px', resize: 'vertical' }}
                         />
-                        <label className="file-upload" htmlFor="questionFile">Upload question file</label>
-                        <input
-                            id="questionFile"
-                            ref={questionFileRef}
-                            className="file-input"
-                            type="file"
-                            accept=".txt,.md,.json,.csv"
-                            onChange={(e) => setQuestionFile(e.target.files?.[0] || null)}
-                        />
-                        <span className="file-meta">{questionFile ? `Selected: ${questionFile.name}` : "No file selected"}</span>
-                    </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                            <label style={{ display: 'inline-flex', alignItems: 'center', padding: '0.5rem 1.1rem', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '999px', fontFamily: 'var(--font-code)', fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.05em', background: 'rgba(255,255,255,0.3)', cursor: 'pointer', color: 'var(--text-secondary)' }} htmlFor="questionFile">
+                                Upload question file
+                            </label>
+                            <input
+                                id="questionFile"
+                                ref={questionFileRef}
+                                type="file"
+                                accept=".txt,.md,.json,.csv"
+                                style={{ display: 'none' }}
+                                onChange={(e) => setQuestionFile(e.target.files?.[0] || null)}
+                            />
+                            <span style={{ fontFamily: 'var(--font-code)', fontSize: '0.75rem', color: 'var(--text-primary)', fontWeight: 'bold' }}>{questionFile ? `Selected: ${questionFile.name}` : "No file selected"}</span>
+                        </div>
 
-                    <div className="qa-field">
-                        <label htmlFor="answer">Answer</label>
                         <textarea
-                            id="answer"
+                            className="klipsan-input"
                             value={answer}
                             onChange={(e) => setAnswer(e.target.value)}
                             placeholder="Type the answer here"
+                            style={{ minHeight: '130px', resize: 'vertical' }}
                         />
-                        <label className="file-upload" htmlFor="answerFile">Upload answer file</label>
-                        <input
-                            id="answerFile"
-                            ref={answerFileRef}
-                            className="file-input"
-                            type="file"
-                            accept=".txt,.md,.json,.csv"
-                            onChange={(e) => setAnswerFile(e.target.files?.[0] || null)}
-                        />
-                        <span className="file-meta">{answerFile ? `Selected: ${answerFile.name}` : "No file selected"}</span>
-                    </div>
-                    </>}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            <label style={{ display: 'inline-flex', alignItems: 'center', padding: '0.5rem 1.1rem', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '999px', fontFamily: 'var(--font-code)', fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.05em', background: 'rgba(255,255,255,0.3)', cursor: 'pointer', color: 'var(--text-secondary)' }} htmlFor="answerFile">
+                                Upload answer file
+                            </label>
+                            <input
+                                id="answerFile"
+                                ref={answerFileRef}
+                                type="file"
+                                accept=".txt,.md,.json,.csv"
+                                style={{ display: 'none' }}
+                                onChange={(e) => setAnswerFile(e.target.files?.[0] || null)}
+                            />
+                            <span style={{ fontFamily: 'var(--font-code)', fontSize: '0.75rem', color: 'var(--text-primary)', fontWeight: 'bold' }}>{answerFile ? `Selected: ${answerFile.name}` : "No file selected"}</span>
+                        </div>
+                    </div>}
 
                     {entryMode === "multiple" && (
-                        <div className="qa-field">
-                            <div className="multi-text-top">
-                                <p className="mode-title">Multiple Text Entries</p>
-                                <div className="text-actions">
-                                    <button type="button" className="text-add-btn" onClick={addMultipleTextEntry}><i className="fas fa-plus"></i>Add Text File</button>
-                                    <button type="button" className="text-delete-btn" onClick={deleteActiveTextEntry}><i className="fas fa-trash"></i>Delete Text File</button>
-                                </div>
-                            </div>
-
-                            <div className="text-switcher" role="tablist" aria-label="Text entry selector">
+                        <div className="klipsan-fields" style={{ background: 'rgba(255,255,255,0.2)', padding: '1.25rem', borderRadius: 'calc(var(--border-radius) - 8px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+                            <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.14)', marginBottom: '0.5rem' }}>
                                 {multipleTextEntries.map((entry, index) => (
                                     <button
-                                        key={`${entry.name}-${index}`}
+                                        key={`tab-${index}`}
                                         type="button"
-                                        className={`text-switch-btn ${index === activeTextIndex ? "active" : ""}`}
+                                        style={{ padding: '0.5rem 1rem', whiteSpace: 'nowrap', borderRadius: '999px', border: '1px solid rgba(255,255,255,0.14)', background: index === activeTextIndex ? 'var(--text-primary)' : 'rgba(255,255,255,0.5)', color: index === activeTextIndex ? 'var(--text-inverse)' : 'var(--text-primary)', fontFamily: 'var(--font-code)', fontSize: '0.8rem', fontWeight: 'bold', cursor: 'pointer', textTransform: 'uppercase' }}
                                         onClick={() => setActiveTextIndex(index)}
-                                        role="tab"
-                                        aria-selected={index === activeTextIndex}
                                     >
-                                        {`Text ${index + 1}`}
+                                        Text {index + 1}
                                     </button>
                                 ))}
                             </div>
-                            <span className="file-meta">Text {activeTextIndex + 1} of {multipleTextEntries.length}</span>
 
-                            <label htmlFor="multiTextName">Text File Name</label>
                             <input
-                                id="multiTextName"
+                                className="klipsan-input"
                                 type="text"
                                 value={activeTextEntry.name}
                                 onChange={(e) => updateActiveTextEntry("name", e.target.value)}
                                 placeholder="example: notes-day-12.txt"
                             />
 
-                            <label htmlFor="multiTextContent">Text Content</label>
                             <textarea
-                                id="multiTextContent"
+                                className="klipsan-input"
                                 value={activeTextEntry.content}
                                 onChange={(e) => updateActiveTextEntry("content", e.target.value)}
                                 placeholder="Write content for selected text entry"
+                                style={{ minHeight: '130px', resize: 'vertical' }}
                             />
 
-                            <label className="file-upload" htmlFor="multipleFiles">Upload multiple files</label>
-                            <input
-                                id="multipleFiles"
-                                ref={multipleFilesRef}
-                                className="file-input"
-                                type="file"
-                                multiple
-                                onChange={(e) => setMultipleFiles(Array.from(e.target.files || []))}
-                            />
-                            <span className="file-meta">{multipleFiles.length > 0 ? `${multipleFiles.length} file(s) selected` : "No files selected"}</span>
+                            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', marginBottom: '1rem' }}>
+                                <button type="button" onClick={addMultipleTextEntry} style={{ flex: 1, padding: '0.6rem', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', border: 'none', fontFamily: 'var(--font-code)', fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', cursor: 'pointer', color: 'var(--text-primary)' }}>
+                                   + Add Text File
+                                </button>
+                                <button type="button" onClick={deleteActiveTextEntry} style={{ flex: 1, padding: '0.6rem', borderRadius: '999px', background: 'rgba(255,255,255,0.08)', border: 'none', fontFamily: 'var(--font-code)', fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', cursor: 'pointer', color: 'var(--danger)' }}>
+                                   Delete Text File
+                                </button>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.14)', paddingTop: '1.25rem' }}>
+                                <label style={{ display: 'inline-flex', alignItems: 'center', padding: '0.6rem 1.1rem', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '999px', fontFamily: 'var(--font-code)', fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.05em', background: 'rgba(255,255,255,0.4)', cursor: 'pointer', color: 'var(--text-primary)' }} htmlFor="multipleFiles">
+                                    Upload multiple files
+                                </label>
+                                <input
+                                    id="multipleFiles"
+                                    ref={multipleFilesRef}
+                                    type="file"
+                                    multiple
+                                    style={{ display: 'none' }}
+                                    onChange={(e) => setMultipleFiles(Array.from(e.target.files || []))}
+                                />
+                                <span style={{ fontFamily: 'var(--font-code)', fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--text-secondary)' }}>
+                                    {multipleFiles.length > 0 ? `${multipleFiles.length} file(s) selected` : "No files selected"}
+                                </span>
+                            </div>
+                            
                             {multipleFiles.length > 0 && (
-                                <ul className="file-list">
+                                <ul style={{ margin: '0.75rem 0 0', paddingLeft: '1.5rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-code)', fontSize: '0.75rem', display: 'grid', gap: '0.25rem' }}>
                                     {multipleFiles.map((file) => (
                                         <li key={`${file.name}-${file.lastModified}`}>{file.name}</li>
                                     ))}
@@ -294,11 +325,18 @@ function User({ theme, setTheme }) {
                         </div>
                     )}
 
-                    <div className="user-actions">
-                        <button type="submit" disabled={isPushing}>{isPushing ? "Pushing..." : "Push to GitHub"}</button>
-                    </div>
+                    <button className="klipsan-button" style={{ marginTop: '1.5rem', minHeight: '3.5rem' }} type="submit" disabled={isPushing}>
+                        {isPushing ? "Pushing..." : "Push to GitHub"}
+                    </button>
+                    <p className="klipsan-auth-foot" style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
+                        Ready to ship? Ensure remote is synced.
+                    </p>
                 </form>
             </section>
+
+            <div className="footer-shell">
+                <Footer />
+            </div>
         </div>
     );
 }

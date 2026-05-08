@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "./login-nav";
+import Footer from "./footer";
 import api from "../api.js";
 import toast from "react-hot-toast";
-import "../css/login.css";
+import "../css/klipsan.css";
 
 function Register({ theme, setTheme }) {
     const [username, setUsername] = useState("");
@@ -37,31 +38,38 @@ function Register({ theme, setTheme }) {
     }
 
     return (
-        <div className="register-page page-shell">
+        <div className="register-page page-shell klipsan-auth-page">
             <Header theme={theme} setTheme={setTheme} />
-            <section className="register-layout content-wrap">
-                <article className="glass-card register-copy">
-                    <p className="eyebrow">Bootstrap Account</p>
-                    <h1>Initialize your workspace identity and start shipping entries.</h1>
-                    <p>
-                        Register once to create your profile in MongoDB, configure GitHub targets, and keep every learning entry versioned.
-                    </p>
-                    <ul className="register-points">
+            <section className="klipsan-auth-grid">
+                <article className="klipsan-auth-copy">
+                    <div
+                        className="klipsan-auth-visual"
+                        style={{
+                            backgroundImage:
+                                "url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80')",
+                        }}
+                        aria-hidden="true"
+                    />
+                    <div>
+                        <p className="kl-kicker">Bootstrap Account</p>
+                        <h1>Initialize your workspace identity and start shipping entries.</h1>
+                        <p>
+                            Register once to create your profile in MongoDB, configure GitHub targets, and keep every learning entry versioned.
+                        </p>
+                    </div>
+                    <ul className="klipsan-auth-list">
                         <li>Unique username and secure password validation</li>
                         <li>One profile for all your repository pushes</li>
                         <li>Instant jump from auth to workspace</li>
                     </ul>
-                    <div className="auth-terminal-log" aria-hidden="true">
-                        <p>$ auth register --username &lt;new-user&gt;</p>
-                        <p className="ok">db.insert(users): success</p>
-                        <p className="hint">next: login and configure /github</p>
-                    </div>
                 </article>
 
-                <form className="register glass-card" onSubmit={handleRegister}>
+                <form className="klipsan-auth-form" onSubmit={handleRegister}>
+                    <p className="kl-kicker">Start publishing</p>
                     <h2>Register</h2>
-                    <div className="inputs">
+                    <div className="klipsan-fields">
                         <input
+                            className="klipsan-input"
                             type="text"
                             placeholder="Username"
                             value={username}
@@ -70,6 +78,7 @@ function Register({ theme, setTheme }) {
                             required
                         />
                         <input
+                            className="klipsan-input"
                             type="password"
                             placeholder="Password"
                             value={password}
@@ -78,6 +87,7 @@ function Register({ theme, setTheme }) {
                             required
                         />
                         <input
+                            className="klipsan-input"
                             type="password"
                             placeholder="Confirm Password"
                             value={confirmPassword}
@@ -86,14 +96,16 @@ function Register({ theme, setTheme }) {
                             required
                         />
                     </div>
-                    <div className="login-btn">
-                        <button type="submit">Create Account</button>
-                    </div>
-                    <p className="form-footer">
-                        Already have an account? <Link to="/login">Sign in</Link>
+                    <button className="klipsan-button" type="submit">Create Account</button>
+                    <p className="klipsan-auth-foot">
+                        Already have an account? <Link to="/login">Sign In</Link>
                     </p>
                 </form>
             </section>
+
+            <div className="footer-shell">
+                <Footer />
+            </div>
         </div>
     );
 }

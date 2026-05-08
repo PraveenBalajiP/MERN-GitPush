@@ -1,63 +1,77 @@
 import { useEffect, useState } from "react";
 import api from "../api.js";
 import Header from "./header";
+import Footer from "./footer";
+import "../css/klipsan.css";
 
-function History({theme,setTheme}){
-    const [historyItems,setHistoryItems]=useState([]);
-    const [loading,setLoading]=useState(true);
-    const [errorMessage,setErrorMessage]=useState("");
+function History({ theme, setTheme }) {
+    const [historyItems, setHistoryItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState("");
 
-    async function loadHistory(){
-        try{
+    async function loadHistory() {
+        try {
             setLoading(true);
             setErrorMessage("");
-            const response=await api.get("/api/github/history?limit=12");
+            const response = await api.get("/api/github/history?limit=12");
             setHistoryItems(response.data?.history || []);
-        }
-        catch(error){
+        } catch (error) {
             setHistoryItems([]);
             setErrorMessage(error.response?.data?.message || "Unable to load history right now.");
-        }
-        finally{
+        } finally {
             setLoading(false);
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         loadHistory();
-    },[]);
+    }, []);
 
-    function formatDate(value){
-        if(!value){
+    function formatDate(value) {
+        if (!value) {
             return "Unknown date";
         }
-        const parsedDate=new Date(value);
-        if(Number.isNaN(parsedDate.getTime())){
+        const parsedDate = new Date(value);
+        if (Number.isNaN(parsedDate.getTime())) {
             return "Unknown date";
         }
         return parsedDate.toLocaleString();
     }
 
-    return(
-        <div className="history page-shell">
+    return (
+        <div className="history page-shell klipsan-page inner-app">
             <Header theme={theme} setTheme={setTheme} />
 
-            <section className="content-wrap">
-                <article className="glass-card info-card">
-                    <p className="eyebrow">History</p>
-                    <h1>Your learning journey, commit by commit</h1>
-                    <p>
-                        Track recent repository updates created from your workspace pushes.
-                    </p>
-                    <button type="button" className="btn-ghost history-refresh" onClick={loadHistory}>
-                        Refresh History
-                    </button>
-                </article>
+            <div className="kl-inner kl-page">
+                <section className="klipsan-hero">
+                    <article className="klipsan-copy">
+                        <p className="kl-kicker">History</p>
+                        <h1>Your learning journey, commit by commit</h1>
+                        <p>Track recent repository updates created from your workspace pushes.</p>
+                        <button
+                            type="button"
+                            className="klipsan-button ghost"
+                            style={{ marginTop: "1rem", width: "fit-content" }}
+                            onClick={loadHistory}
+                        >
+                            Refresh history
+                        </button>
+                    </article>
+
+                    <div
+                        className="klipsan-image"
+                        style={{
+                            backgroundImage:
+                                "url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1400&q=80')",
+                        }}
+                        aria-hidden="true"
+                    />
+                </section>
 
                 {loading && (
                     <div className="timeline">
-                        <article className="glass-card timeline-item">
-                            <span>..</span>
+                        <article className="klipsan-card timeline-item">
+                            <span>··</span>
                             <div>
                                 <h3>Loading history</h3>
                                 <p>Fetching latest commits from your configured GitHub repository.</p>
@@ -68,7 +82,7 @@ function History({theme,setTheme}){
 
                 {!loading && errorMessage && (
                     <div className="timeline">
-                        <article className="glass-card timeline-item">
+                        <article className="klipsan-card timeline-item">
                             <span>!</span>
                             <div>
                                 <h3>History unavailable</h3>
@@ -78,9 +92,9 @@ function History({theme,setTheme}){
                     </div>
                 )}
 
-                {!loading && !errorMessage && historyItems.length===0 && (
+                {!loading && !errorMessage && historyItems.length === 0 && (
                     <div className="timeline">
-                        <article className="glass-card timeline-item">
+                        <article className="klipsan-card timeline-item">
                             <span>0</span>
                             <div>
                                 <h3>No updates yet</h3>
@@ -90,14 +104,16 @@ function History({theme,setTheme}){
                     </div>
                 )}
 
-                {!loading && !errorMessage && historyItems.length>0 && (
+                {!loading && !errorMessage && historyItems.length > 0 && (
                     <div className="timeline">
-                        {historyItems.map((item,index)=>(
-                            <article className="glass-card timeline-item" key={item.sha}>
-                                <span>{String(index+1).padStart(2,"0")}</span>
+                        {historyItems.map((item, index) => (
+                            <article className="klipsan-card timeline-item" key={item.sha}>
+                                <span>{String(index + 1).padStart(2, "0")}</span>
                                 <div>
                                     <h3>{item.message}</h3>
-                                    <p>{item.author} • {formatDate(item.date)}</p>
+                                    <p>
+                                        {item.author} • {formatDate(item.date)}
+                                    </p>
                                     {item.url && (
                                         <a className="timeline-link" href={item.url} target="_blank" rel="noreferrer">
                                             View commit
@@ -108,9 +124,13 @@ function History({theme,setTheme}){
                         ))}
                     </div>
                 )}
-            </section>
+
+                <div className="footer-shell">
+                    <Footer />
+                </div>
+            </div>
         </div>
     );
 }
 
-export default History
+export default History;

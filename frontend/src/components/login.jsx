@@ -1,77 +1,94 @@
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
-import Header from "./login-nav"
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Header from "./login-nav";
+import Footer from "./footer";
 import api from "../api.js";
 import toast from "react-hot-toast";
-import "../css/login.css"
+import "../css/klipsan.css";
 
-function Login({theme, setTheme}){
-    const [username,setUsername]=useState("");
-    const [password,setPassword]=useState("");
+function Login({ theme, setTheme }) {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    async function handleLogin(event){
+    async function handleLogin(event) {
         event.preventDefault();
-        try{
-            const response=await api.post("/api/auth/login",{username,password});
+        try {
+            const response = await api.post("/api/auth/login", { username, password });
             toast.success(response.data.message);
-            navigate("/user");
-        }
-        catch(error){
-            if(error.response){
+            navigate("/home");
+        } catch (error) {
+            if (error.response) {
                 toast.error(error.response.data.message || "Login Failed");
-            }
-            else{
-                toast.error("Login Failed: "+error.message);
+            } else {
+                toast.error("Login Failed: " + error.message);
             }
         }
     }
 
-    return(
-        <div className="login-page page-shell">
+    return (
+        <div className="login-page page-shell klipsan-auth-page">
             <Header theme={theme} setTheme={setTheme} />
-            <section className="login-layout content-wrap">
-                <article className="glass-card login-copy">
-                    <p className="eyebrow">Auth Session</p>
-                    <h1>Authenticate, sync, and commit without leaving your flow.</h1>
-                    <p>
-                        Sign in to your GitPush workspace and continue publishing learning logs with a clean Git history.
-                    </p>
-                    <ul className="login-points">
+
+            <section className="klipsan-auth-grid">
+                <article className="klipsan-auth-copy">
+                    <div
+                        className="klipsan-auth-visual"
+                        style={{
+                            backgroundImage:
+                                "url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80')",
+                        }}
+                        aria-hidden="true"
+                    />
+                    <div>
+                        <p className="kl-kicker">Auth Session</p>
+                        <h1>Authenticate, sync, and commit without leaving your flow.</h1>
+                        <p>
+                            Sign in to your GitPush workspace and continue publishing learning logs with a clean Git history.
+                        </p>
+                    </div>
+                    <ul className="klipsan-auth-list">
                         <li>Session cookie auth for protected routes</li>
                         <li>Fast push flow for daily entries</li>
                         <li>Repository-ready structure by default</li>
                     </ul>
-                    <div className="auth-terminal-log" aria-hidden="true">
-                        <p>$ auth login --user &lt;username&gt;</p>
-                        <p className="ok">token created: session.active=true</p>
-                        <p className="hint">next: open /user and push your notes</p>
-                    </div>
                 </article>
 
-                <form className="login glass-card" onSubmit={handleLogin}>
+                <form className="klipsan-auth-form" onSubmit={handleLogin}>
+                    <p className="kl-kicker">Sign in</p>
                     <h2>Login</h2>
-                    <div className="inputs">
-                        <input  type="text" 
-                                placeholder="Username" 
-                                value={username} 
-                                onChange={(e)=>setUsername(e.target.value)}
-                                autoComplete="username"
-                                required/>
-                        <input  type="password" 
-                                placeholder="Password" 
-                                value={password} 
-                                onChange={(e)=>setPassword(e.target.value)}
-                                autoComplete="current-password"
-                                required/>
+                    <div className="klipsan-fields">
+                        <input
+                            className="klipsan-input"
+                            type="text"
+                            placeholder="Username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            autoComplete="username"
+                            required
+                        />
+                        <input
+                            className="klipsan-input"
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            autoComplete="current-password"
+                            required
+                        />
                     </div>
-                    <div className="login-btn">
-                        <button type="submit">Sign In</button>
-                    </div>
+                    <button className="klipsan-button" type="submit">Sign In</button>
+                    <p className="klipsan-auth-foot">
+                        New here? <Link to="/register">Create Account</Link>
+                    </p>
                 </form>
             </section>
+
+            <div className="footer-shell">
+                <Footer />
+            </div>
         </div>
     );
 }
 
-export default Login
+export default Login;
