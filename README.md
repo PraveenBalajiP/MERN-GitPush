@@ -1,13 +1,14 @@
 # GitPush Studio
 
-A full-stack MERN application for GitHub repository management and tracking. Authenticate with JWT, link your GitHub profile, and manage your repositories in a centralized dashboard.
+A full-stack MERN application focused on making Git commits and pushes easier from a guided UI. Authenticate with JWT, connect your GitHub configuration, prepare entry content, and push it quickly from one workspace.
 
 ## 🚀 Features
 
 - **User Authentication**: Secure JWT-based login/registration with bcrypt password hashing
-- **GitHub OAuth Integration**: Link and sync GitHub profiles with automatic authentication
+- **GitHub Configuration**: Save repository details needed for push workflows
 - **Protected Routes**: Middleware-based authorization for secure API endpoints
-- **Real-time GitHub Data**: Fetch and display repositories, commit history, and user profile info
+- **Workspace Entry Flow**: Write question/answer content or add multiple text/files before pushing
+- **Quick Commit + Push**: Build commit-ready payloads and push directly from the app
 - **Responsive UI**: Modern React frontend with Vite for fast development and builds
 - **Full-Stack Deployment**: Production-ready setup for Vercel with CI/CD automation
 - **HTTP-Only Cookies**: Secure credential transmission across frontend and backend
@@ -123,7 +124,7 @@ MERN-GitPush/
 3. **JWT Generation**: Server generates JWT token signed with `JWT_SECRET`
 4. **Cookie Storage**: HTTP-only cookie with `Secure` & `SameSite=None` (production)
 5. **Protected Routes**: Middleware extracts token from cookie, verifies JWT
-6. **Dashboard Access**: Authenticated users can fetch GitHub data
+6. **Workspace Access**: Authenticated users can open the workspace and run commit/push actions
 
 ## 🌐 API Endpoints
 
