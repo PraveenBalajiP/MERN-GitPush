@@ -87,7 +87,7 @@ function Github({ theme, setTheme }) {
                             type="text"
                             value={repoOwner}
                             onChange={(e) => setRepoOwner(e.target.value)}
-                            placeholder="example: octocat"
+                            placeholder="GitHub username or org"
                             required
                         />
                         <input
@@ -96,7 +96,7 @@ function Github({ theme, setTheme }) {
                             type="text"
                             value={repoName}
                             onChange={(e) => setRepoName(e.target.value)}
-                            placeholder="example: notes-repo"
+                            placeholder="Repository name"
                             required
                         />
                         <input
@@ -105,7 +105,7 @@ function Github({ theme, setTheme }) {
                             type="text"
                             value={branch}
                             onChange={(e) => setBranch(e.target.value)}
-                            placeholder="example: main"
+                            placeholder="Branch name (e.g., main, master)"
                             required
                         />
                         <input
@@ -114,7 +114,7 @@ function Github({ theme, setTheme }) {
                             type="text"
                             value={folderPath}
                             onChange={(e) => setFolderPath(e.target.value)}
-                            placeholder="example: answers/daily"
+                            placeholder="Folder path (e.g., answers/daily)"
                         />
                         <input
                             id="token"
@@ -122,7 +122,7 @@ function Github({ theme, setTheme }) {
                             type="password"
                             value={token}
                             onChange={(e) => setToken(e.target.value)}
-                            placeholder={hasToken ? "Token already saved. Enter only to update." : "ghp_..."}
+                            placeholder={hasToken ? "Token already saved. Enter only to update." : "GitHub Personal Access Token"}
                         />
                     </div>
                     <button className="klipsan-button" style={{ marginTop: '0.5rem' }} type="submit">Save Settings</button>
