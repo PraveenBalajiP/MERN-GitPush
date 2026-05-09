@@ -30,7 +30,7 @@ function App() {
     <>
       <div className="app app-root">
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<Landing theme={theme} setTheme={setTheme} />} />
           <Route path="/login" element={<Login theme={theme} setTheme={setTheme}/>} />
           <Route path="/register" element={<Register theme={theme} setTheme={setTheme}/>} />
           <Route path="/home" element={

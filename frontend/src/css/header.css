@@ -235,7 +235,7 @@
         position: absolute;
         top: calc(100% + 1rem);
         left: 0;
-        z-index: 999;
+        z-index: 1100;
     }
 
     .mobile-nav .nav {

@@ -2,6 +2,8 @@
 
 A full-stack MERN application focused on making Git commits and pushes easier from a guided UI. Authenticate with JWT, connect your GitHub configuration, prepare entry content, and push it quickly from one workspace.
 
+*Last updated: 09/05/2026*
+
 ## 🚀 Features
 
 - **User Authentication**: Secure JWT-based login/registration with bcrypt password hashing

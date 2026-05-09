@@ -92,19 +92,7 @@ function Home({ theme, setTheme }) {
                             aria-hidden="true"
                         />
                         <pre
-                            style={{
-                                margin: 0,
-                                padding: "1.25rem",
-                                border: "1px solid rgba(255,255,255,0.14)",
-                                background: "rgba(0,0,0,0.35)",
-                                fontFamily: "JetBrains Mono, ui-monospace, monospace",
-                                fontSize: "0.85rem",
-                                lineHeight: 1.75,
-                                color: "rgba(255,255,255,0.88)",
-                                minHeight: "14rem",
-                                whiteSpace: "pre-wrap",
-                                wordBreak: "break-word",
-                            }}
+                            className="kl-terminal-preview"
                         >
                             {gitCommands}
                             <span style={{ animation: "blink 1s infinite", marginLeft: "2px" }}>_</span>

@@ -1,15 +1,33 @@
 /* Klipsan (Squarespace) — layout, type, and sections */
 
 :root {
-    --kl-black: #0a0a0a;
-    --kl-black-soft: #111111;
-    --kl-white: #ffffff;
-    --kl-muted: rgba(255, 255, 255, 0.58);
-    --kl-line: rgba(255, 255, 255, 0.14);
+    --kl-black: #eceff4;
+    --kl-black-soft: #f6f8fb;
+    --kl-white: #1c2330;
+    --kl-muted: rgba(28, 35, 48, 0.68);
+    --kl-line: rgba(28, 35, 48, 0.2);
+    --kl-on-image-heading: #1b2230;
+    --kl-on-image-body: rgba(27, 34, 48, 0.88);
+    --kl-overlay-start: rgba(246, 248, 251, 0.2);
+    --kl-overlay-mid: rgba(246, 248, 251, 0.66);
+    --kl-overlay-end: rgba(246, 248, 251, 0.92);
     --kl-max: 1180px;
     --kl-pad: clamp(1.25rem, 4vw, 2.5rem);
     --kl-display: "Bebas Neue", "Impact", sans-serif;
     --kl-body: "DM Sans", system-ui, sans-serif;
+}
+
+[data-theme="dark"] {
+    --kl-black: #181c24;
+    --kl-black-soft: #202531;
+    --kl-white: #ffffff;
+    --kl-muted: rgba(255, 255, 255, 0.58);
+    --kl-line: rgba(255, 255, 255, 0.14);
+    --kl-on-image-heading: #ffffff;
+    --kl-on-image-body: rgba(255, 255, 255, 0.9);
+    --kl-overlay-start: rgba(12, 14, 20, 0.16);
+    --kl-overlay-mid: rgba(12, 14, 20, 0.6);
+    --kl-overlay-end: rgba(12, 14, 20, 0.9);
 }
 
 [data-shell="klipsan"] .klipsan-page {
@@ -129,7 +147,7 @@
     gap: 0.4rem;
     min-height: 3rem;
     padding: 0.8rem 1.2rem;
-    border-color: rgba(255, 255, 255, 0.32) !important;
+    border-color: color-mix(in srgb, var(--kl-white) 38%, transparent) !important;
     background: transparent !important;
     color: var(--kl-white) !important;
     border-radius: 2px;
@@ -139,14 +157,14 @@
     letter-spacing: 0.16em;
     text-transform: uppercase;
     text-decoration: none;
-    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.06);
-    border: 2px solid rgba(255, 255, 255, 0.32) !important;
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--kl-white) 10%, transparent);
+    border: 2px solid color-mix(in srgb, var(--kl-white) 38%, transparent) !important;
 }
 
 .kl-btn-outline:hover {
-    background: rgba(255, 255, 255, 0.12) !important;
-    border-color: rgba(255, 255, 255, 0.5) !important;
-    box-shadow: 0 10px 26px rgba(255, 255, 255, 0.1);
+    background: color-mix(in srgb, var(--kl-white) 12%, transparent) !important;
+    border-color: color-mix(in srgb, var(--kl-white) 52%, transparent) !important;
+    box-shadow: 0 10px 26px color-mix(in srgb, var(--kl-white) 12%, transparent);
     transform: translateY(-1px);
     filter: brightness(1.06);
 }
@@ -181,9 +199,9 @@
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid color-mix(in srgb, var(--kl-white) 28%, transparent);
     padding: 0.4rem 0.75rem;
-    color: rgba(255, 255, 255, 0.88);
+    color: color-mix(in srgb, var(--kl-white) 88%, transparent);
 }
 
 .kl-page {
@@ -214,12 +232,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        180deg,
-        rgba(10, 10, 10, 0.15) 0%,
-        rgba(10, 10, 10, 0.55) 45%,
-        rgba(10, 10, 10, 0.92) 100%
-    );
+    background: linear-gradient(180deg, var(--kl-overlay-start) 0%, var(--kl-overlay-mid) 45%, var(--kl-overlay-end) 100%);
 }
 
 .kl-hero-copy {
@@ -235,7 +248,7 @@
     line-height: 0.92;
     letter-spacing: 0.02em;
     font-weight: 400;
-    color: var(--kl-white);
+    color: var(--kl-on-image-heading);
     max-width: 14ch;
 }
 
@@ -246,7 +259,7 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.88);
+    color: var(--kl-on-image-body);
     line-height: 1.45;
 }
 
@@ -551,8 +564,8 @@
 
 .klipsan-auth-list li {
     padding-left: 1rem;
-    border-left: 2px solid rgba(255, 255, 255, 0.35);
-    color: rgba(255, 255, 255, 0.82);
+    border-left: 2px solid color-mix(in srgb, var(--kl-white) 35%, transparent);
+    color: color-mix(in srgb, var(--kl-white) 82%, transparent);
     font-size: 0.95rem;
     line-height: 1.5;
 }
@@ -575,14 +588,14 @@
     padding: 0.95rem 1rem;
     border-radius: 2px;
     border: 1px solid var(--kl-line);
-    background: rgba(0, 0, 0, 0.35);
+    background: color-mix(in srgb, var(--kl-white) 6%, var(--kl-black-soft));
     color: var(--kl-white);
     font-family: var(--kl-body);
     font-size: 0.95rem;
 }
 
 .klipsan-input::placeholder {
-    color: rgba(255, 255, 255, 0.38);
+    color: color-mix(in srgb, var(--kl-white) 45%, transparent);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-size: 0.78rem;
@@ -590,7 +603,8 @@
 
 .klipsan-input:focus {
     outline: none;
-    border-color: rgba(255, 255, 255, 0.45);
+    border-color: color-mix(in srgb, var(--kl-white) 45%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--kl-white) 12%, transparent);
 }
 
 textarea.klipsan-input {
@@ -629,7 +643,7 @@ textarea.klipsan-input {
     flex-wrap: wrap;
     margin-top: 1rem;
     padding-top: 1.25rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    border-top: 1px solid color-mix(in srgb, var(--kl-white) 14%, transparent);
 }
 
 .workspace-tab-group {
@@ -645,9 +659,9 @@ textarea.klipsan-input {
     gap: 0.5rem;
     padding: 0.7rem 1.1rem;
     border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.03);
-    color: rgba(255, 255, 255, 0.78);
+    border: 1px solid color-mix(in srgb, var(--kl-white) 22%, transparent);
+    background: color-mix(in srgb, var(--kl-white) 4%, transparent);
+    color: color-mix(in srgb, var(--kl-white) 78%, transparent);
     font-family: var(--font-code);
     font-size: 0.82rem;
     font-weight: 800;
@@ -659,16 +673,16 @@ textarea.klipsan-input {
 
 .workspace-mode-btn:hover {
     transform: translateY(-1px);
-    border-color: rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
+    border-color: color-mix(in srgb, var(--kl-white) 50%, transparent);
+    background: color-mix(in srgb, var(--kl-white) 12%, transparent);
+    color: var(--kl-white);
 }
 
 .workspace-mode-btn.active {
-    color: #101010;
-    background: #ffffff;
-    border-color: #ffffff;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2), 0 10px 24px rgba(255, 255, 255, 0.2);
+    color: var(--kl-black);
+    background: var(--kl-white);
+    border-color: var(--kl-white);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--kl-white) 20%, transparent), 0 10px 24px color-mix(in srgb, var(--kl-white) 20%, transparent);
 }
 
 .workspace-mode-btn:focus-visible {
@@ -881,14 +895,14 @@ textarea.klipsan-input {
 }
 
 .workspace-multi-content .klipsan-input {
-    background: rgba(0, 0, 0, 0.42);
-    border-color: rgba(255, 255, 255, 0.16);
+    background: color-mix(in srgb, var(--kl-white) 5%, var(--kl-black-soft));
+    border-color: color-mix(in srgb, var(--kl-white) 18%, transparent);
 }
 
 .workspace-multi-content .klipsan-input:focus,
 .klipsan-fields .klipsan-input:focus {
-    border-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+    border-color: color-mix(in srgb, var(--kl-white) 50%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--kl-white) 10%, transparent);
 }
 
 .klipsan-auth-form .klipsan-button {
@@ -909,8 +923,8 @@ textarea.klipsan-input {
 
 .klipsan-button.ghost {
     background: transparent;
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: var(--kl-white);
+    border: 1px solid color-mix(in srgb, var(--kl-white) 35%, transparent);
 }
 
 .klipsan-button.ghost:hover {
@@ -948,7 +962,7 @@ textarea.klipsan-input {
     font-family: var(--kl-body);
     font-size: 1.05rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--kl-white);
 }
 
 .timeline-item p {
@@ -964,14 +978,14 @@ textarea.klipsan-input {
     font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #ffffff;
+    color: var(--kl-white);
     text-decoration: underline;
     text-underline-offset: 0.2rem;
     transition: color 0.18s ease, opacity 0.18s ease, filter 0.18s ease;
 }
 
 .timeline-link:hover {
-    color: #ffffff;
+    color: var(--kl-white);
     opacity: 1;
     filter: brightness(1.1);
 }
@@ -1047,6 +1061,20 @@ textarea.klipsan-input {
     border: 1px solid var(--kl-line);
 }
 
+.kl-terminal-preview {
+    margin: 0;
+    padding: 1.25rem;
+    border: 1px solid var(--kl-line);
+    background: color-mix(in srgb, var(--kl-black) 75%, transparent);
+    font-family: JetBrains Mono, ui-monospace, monospace;
+    font-size: 0.85rem;
+    line-height: 1.75;
+    color: color-mix(in srgb, var(--kl-white) 88%, transparent);
+    min-height: 14rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
 .klipsan-grid-3 {
     display: grid;
     gap: 2px;
@@ -1082,19 +1110,19 @@ textarea.klipsan-input {
 
 /* Match Klipsan chrome on legacy Header / login-nav (header.css) */
 [data-shell="klipsan"] .main {
-    background: rgba(10, 10, 10, 0.72);
+    background: color-mix(in srgb, var(--kl-black) 86%, transparent);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    border-bottom: 1px solid var(--kl-line);
     box-shadow: none;
     animation: none;
 }
 
 [data-shell="klipsan"] .brand-mark {
     border-radius: 2px;
-    background: #ffffff;
-    color: #0a0a0a;
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: var(--kl-white);
+    color: var(--kl-black);
+    border: 1px solid color-mix(in srgb, var(--kl-white) 30%, transparent);
     box-shadow: none;
     font-family: var(--kl-display);
     letter-spacing: 0.06em;
@@ -1106,18 +1134,18 @@ textarea.klipsan-input {
     letter-spacing: 0.1em;
     text-transform: uppercase;
     font-weight: 400;
-    color: #ffffff;
+    color: var(--kl-white);
 }
 
 [data-shell="klipsan"] .brand-tag {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--kl-muted);
     font-size: 0.68rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
 }
 
 [data-shell="klipsan"] .nav a {
-    color: #ffffff;
+    color: var(--kl-white);
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -1127,15 +1155,15 @@ textarea.klipsan-input {
 
 [data-shell="klipsan"] .nav a:hover,
 [data-shell="klipsan"] .nav a:active {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.28);
+    background: color-mix(in srgb, var(--kl-white) 12%, transparent);
+    border-color: color-mix(in srgb, var(--kl-white) 28%, transparent);
     box-shadow: none;
-    color: #ffffff;
+    color: var(--kl-white);
 }
 
 [data-shell="klipsan"] .mobile-nav .nav {
-    background: #111111;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: var(--kl-black-soft);
+    border: 1px solid var(--kl-line);
     box-shadow: none;
 }
 
@@ -1143,21 +1171,21 @@ textarea.klipsan-input {
 [data-shell="klipsan"] .git-btn,
 [data-shell="klipsan"] .nav-toggle {
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    color: #ffffff;
+    border: 1px solid color-mix(in srgb, var(--kl-white) 28%, transparent);
+    color: var(--kl-white);
     border-radius: 2px;
     box-shadow: none;
 }
 
 [data-shell="klipsan"] .toggle-btn:hover,
 [data-shell="klipsan"] .git-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
-    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.08);
+    background: color-mix(in srgb, var(--kl-white) 12%, transparent);
+    color: var(--kl-white);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--kl-white) 10%, transparent);
     transform: translateY(-1px);
 }
 
 [data-shell="klipsan"] .nav-toggle.open {
-    background: #ffffff;
-    color: #0a0a0a;
+    background: var(--kl-white);
+    color: var(--kl-black);
 }

@@ -19,14 +19,14 @@ function Header({theme,setTheme}){
     },[]);
 
     function swapTheme(){
-        if(theme==="light"){
-            setTheme("dark")
-            localStorage.setItem("theme","dark");
-        }
-        else{
-            setTheme("light");
-            localStorage.setItem("theme","light");
-        }
+        setTheme((prev) => {
+            const next = prev === "light" ? "dark" : "light";
+            try{
+                document.documentElement.setAttribute("data-theme", next);
+                localStorage.setItem("theme", next);
+            }catch(e){}
+            return next;
+        });
     }
 
     function closeMenu(){

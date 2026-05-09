@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Footer from "./footer";
+import Header from "./header";
 import "../css/klipsan.css";
 
 const IMG = {
@@ -12,28 +13,12 @@ const IMG = {
     g4: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
     g5: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?auto=format&fit=crop&w=900&q=80",
     g6: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80",
-};
+}
 
-function Landing() {
+function Landing({ theme, setTheme }) {
     return (
         <div className="landing-page klipsan-page">
-            <header className="kl-header">
-                <div className="kl-inner kl-header-inner">
-                    <Link className="kl-wordmark" to="/">
-                        GITPUSH STUDIO
-                    </Link>
-                    <nav className="kl-nav" aria-label="Primary">
-                        <Link to="/home">Home</Link>
-                        <Link to="/about">About</Link>
-                        <Link to="/history">History</Link>
-                        <Link to="/user">Workspace</Link>
-                        <Link className="kl-btn-solid" to="/register">
-                            Register
-                        </Link>
-                        <Link to="/login">Log in</Link>
-                    </nav>
-                </div>
-            </header>
+            <Header theme={theme} setTheme={setTheme} />
 
             <section className="kl-hero" aria-label="Introduction">
                 <div
