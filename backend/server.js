@@ -32,6 +32,16 @@ app.use(express.urlencoded({extended:true}));
 
 const PORT=process.env.PORT || 5000;
 
+try {
+    await connectDB();
+} catch (error) {
+    console.error("MongoDB startup connection failed:", error.message);
+    if (process.env.VERCEL !== "1") {
+        process.exit(1);
+    }
+    throw error;
+}
+
 app.use("/api/auth",authRoutes)
 app.use("/",routes);
 app.use("/api/github", githubRoutes);
@@ -39,8 +49,6 @@ app.use("/api/github", githubRoutes);
 app.get("/",(req,res)=>{
     res.send("⚡Welcome to GitPush Studio API");
 });
-
-connectDB();
 
 if (process.env.VERCEL !== "1") {
     app.listen(PORT,()=>{
