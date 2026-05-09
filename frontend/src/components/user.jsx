@@ -130,6 +130,18 @@ function User({ theme, setTheme }) {
         setMultipleFiles((prev) => prev.filter((_, index) => index !== indexToRemove));
     }
 
+    function deleteMultipleTextEntry(indexToRemove) {
+        if (multipleTextEntries.length === 1) {
+            setMultipleTextEntries([{ name: "text-1.txt", content: "" }]);
+            setActiveTextIndex(0);
+            return;
+        }
+
+        const nextEntries = multipleTextEntries.filter((_, index) => index !== indexToRemove);
+        setMultipleTextEntries(nextEntries);
+        setActiveTextIndex((prev) => Math.max(0, Math.min(prev, nextEntries.length - 1)));
+    }
+
     const activeTextEntry = multipleTextEntries[activeTextIndex] || { name: "", content: "" };
 
     return (
@@ -215,13 +227,15 @@ function User({ theme, setTheme }) {
                     </div>
 
                     {entryMode === "qa" && <div className="klipsan-fields">
-                        <textarea
+                        <div className="workspace-multi-content">
+                            <textarea
                             className="klipsan-input"
                             value={question}
                             onChange={(e) => setQuestion(e.target.value)}
                             placeholder="Type the question here"
                             style={{ minHeight: '130px', resize: 'vertical' }}
                         />
+                        <div className="or">OR</div>
                         <div className="workspace-upload-row">
                             <label className="workspace-upload-btn" htmlFor="questionFile">
                                 Upload question file
@@ -236,14 +250,16 @@ function User({ theme, setTheme }) {
                             />
                             <span className="workspace-upload-meta">{questionFile ? `Selected: ${questionFile.name}` : "No file selected"}</span>
                         </div>
-
-                        <textarea
+                        </div>
+                        <div className="workspace-multi-content">
+                            <textarea
                             className="klipsan-input"
                             value={answer}
                             onChange={(e) => setAnswer(e.target.value)}
                             placeholder="Type the answer here"
                             style={{ minHeight: '130px', resize: 'vertical' }}
                         />
+                        <div className="or">OR</div>
                         <div className="workspace-upload-row">
                             <label className="workspace-upload-btn" htmlFor="answerFile">
                                 Upload answer file
@@ -258,64 +274,76 @@ function User({ theme, setTheme }) {
                             />
                             <span className="workspace-upload-meta">{answerFile ? `Selected: ${answerFile.name}` : "No file selected"}</span>
                         </div>
+                        </div>
                     </div>}
 
                     {entryMode === "multiple" && (
                         <div className="klipsan-fields workspace-multi-panel">
                             <div className="workspace-tab-row">
                                 {multipleTextEntries.map((entry, index) => (
-                                    <button
-                                        key={`tab-${index}`}
-                                        type="button"
-                                        className={`workspace-tab-btn ${index === activeTextIndex ? 'active' : ''}`}
-                                        onClick={() => setActiveTextIndex(index)}
-                                    >
-                                        Text {index + 1}
-                                    </button>
+                                    <div key={`tab-${index}`} className="workspace-tab-group">
+                                        <button
+                                            type="button"
+                                            className={`workspace-tab-btn ${index === activeTextIndex ? 'active' : ''}`}
+                                            onClick={() => setActiveTextIndex(index)}
+                                        >
+                                            {entry.name?.trim() || `Text ${index + 1}`}
+                                        </button>
+                                        {index !== 0 && (
+                                            <button
+                                                type="button"
+                                                className="workspace-tab-remove"
+                                                onClick={() => deleteMultipleTextEntry(index)}
+                                                aria-label={`Remove ${entry.name?.trim() || `Text ${index + 1}`}`}
+                                            >
+                                                <i className="fa-solid fa-xmark" />
+                                            </button>
+                                        )}
+                                    </div>
                                 ))}
                             </div>
-
-                            <input
-                                className="klipsan-input"
-                                type="text"
-                                value={activeTextEntry.name}
-                                onChange={(e) => updateActiveTextEntry("name", e.target.value)}
-                                placeholder="example: notes-day-12.txt"
-                            />
-
-                            <textarea
-                                className="klipsan-input"
-                                value={activeTextEntry.content}
-                                onChange={(e) => updateActiveTextEntry("content", e.target.value)}
-                                placeholder="Write content for selected text entry"
-                                style={{ minHeight: '130px', resize: 'vertical' }}
-                            />
-
-                            <div className="workspace-file-actions">
-                                <button type="button" className="workspace-action-btn" onClick={addMultipleTextEntry}>
-                                   + Add Text File
-                                </button>
-                                <button type="button" className="workspace-action-btn danger" onClick={deleteActiveTextEntry}>
-                                   Delete Text File
-                                </button>
-                            </div>
-
-                            <div className="workspace-upload-row">
-                                <label className="workspace-upload-btn" htmlFor="multipleFiles">
-                                    Upload multiple files
-                                </label>
+                            <div className="workspace-multi-content">
                                 <input
-                                    id="multipleFiles"
-                                    ref={multipleFilesRef}
-                                    type="file"
-                                    multiple
-                                    style={{ display: 'none' }}
-                                    onChange={(e) => setMultipleFiles(Array.from(e.target.files || []))}
+                                    className="klipsan-input"
+                                    type="text"
+                                    value={activeTextEntry.name}
+                                    onChange={(e) => updateActiveTextEntry("name", e.target.value)}
+                                    placeholder="example: notes-day-12.txt"
                                 />
-                                <span className="workspace-upload-meta">
-                                    {multipleFiles.length > 0 ? `${multipleFiles.length} file(s) selected` : "No files selected"}
-                                </span>
+
+                                <textarea
+                                    className="klipsan-input"
+                                    value={activeTextEntry.content}
+                                    onChange={(e) => updateActiveTextEntry("content", e.target.value)}
+                                    placeholder="Write content for selected text entry"
+                                    style={{ minHeight: '130px', resize: 'vertical' }}
+                                />
+
+                                <div className="workspace-file-actions">
+                                    <button type="button" className="workspace-action-btn" onClick={addMultipleTextEntry}>
+                                    + Add Text File
+                                    </button>
+                                    
+                                </div>
                             </div>
+                            <div className="or">OR</div>
+                            <div className="workspace-multi-content">
+                                <div className="workspace-upload-row">
+                                    <label className="workspace-upload-btn" htmlFor="multipleFiles">
+                                        <i className="fa-solid fa-upload"/>Upload multiple files
+                                    </label>
+                                    <input
+                                        id="multipleFiles"
+                                        ref={multipleFilesRef}
+                                        type="file"
+                                        multiple
+                                        style={{ display: 'none' }}
+                                        onChange={(e) => setMultipleFiles(Array.from(e.target.files || []))}
+                                    />
+                                    <span className="workspace-upload-meta">
+                                        {multipleFiles.length > 0 ? `${multipleFiles.length} file(s) selected` : "No files selected"}
+                                    </span>
+                                </div>
 
                             {multipleFiles.length > 0 && (
                                 <ul className="workspace-file-list">
@@ -328,12 +356,13 @@ function User({ theme, setTheme }) {
                                                 onClick={() => removeMultipleFile(index)}
                                                 aria-label={`Remove ${file.name}`}
                                             >
-                                                Remove
+                                                <i className="fa-solid fa-trash" />
                                             </button>
                                         </li>
                                     ))}
                                 </ul>
                             )}
+                        </div>
                         </div>
                     )}
 

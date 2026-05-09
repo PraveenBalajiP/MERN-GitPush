@@ -632,6 +632,12 @@ textarea.klipsan-input {
     border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
+.workspace-tab-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
 .workspace-mode-btn {
     display: inline-flex;
     align-items: center;
@@ -639,9 +645,9 @@ textarea.klipsan-input {
     gap: 0.5rem;
     padding: 0.7rem 1.1rem;
     border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.78);
     font-family: var(--font-code);
     font-size: 0.82rem;
     font-weight: 800;
@@ -653,15 +659,21 @@ textarea.klipsan-input {
 
 .workspace-mode-btn:hover {
     transform: translateY(-1px);
-    border-color: rgba(255, 255, 255, 0.4);
-    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
 }
 
 .workspace-mode-btn.active {
-    color: #ffffff;
-    background: linear-gradient(135deg, var(--accent-strong), var(--accent));
-    box-shadow: 0 10px 24px rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.38);
+    color: #101010;
+    background: #ffffff;
+    border-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2), 0 10px 24px rgba(255, 255, 255, 0.2);
+}
+
+.workspace-mode-btn:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.75);
+    outline-offset: 2px;
 }
 
 .workspace-mode-input {
@@ -719,6 +731,29 @@ textarea.klipsan-input {
     box-shadow: 0 10px 24px rgba(255, 255, 255, 0.1);
 }
 
+.workspace-tab-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 160, 160, 0.22);
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffd6d6;
+    font-family: var(--font-code);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.workspace-tab-remove:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 160, 160, 0.5);
+    box-shadow: 0 8px 20px rgba(255, 160, 160, 0.08);
+}
+
 .workspace-file-actions,
 .workspace-upload-row {
     display: flex;
@@ -758,6 +793,17 @@ textarea.klipsan-input {
     box-shadow: 0 10px 24px rgba(255, 255, 255, 0.08);
 }
 
+.workspace-action-btn {
+    min-width: 10rem;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 18px rgba(255, 255, 255, 0.06);
+}
+
+.workspace-action-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 12px 26px rgba(255, 255, 255, 0.12);
+}
+
 .workspace-action-btn.danger,
 .workspace-remove-btn {
     color: #ffd6d6;
@@ -774,12 +820,26 @@ textarea.klipsan-input {
     background: rgba(255, 255, 255, 0.08);
 }
 
+.workspace-upload-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
 .workspace-upload-meta {
     font-family: var(--font-code);
     font-size: 0.75rem;
     font-weight: 800;
     color: var(--text-secondary);
     letter-spacing: 0.04em;
+}
+
+.or {
+    margin: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--kl-muted);
+    text-align: center;
 }
 
 .workspace-file-list {
@@ -803,6 +863,48 @@ textarea.klipsan-input {
     font-family: var(--font-code);
     font-size: 0.75rem;
     word-break: break-word;
+}
+
+.workspace-file-item span {
+    flex: 1;
+    min-width: 0;
+}
+
+.workspace-remove-btn {
+    min-width: 6.25rem;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.workspace-remove-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.workspace-multi-content .klipsan-input {
+    background: rgba(0, 0, 0, 0.42);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.workspace-multi-content .klipsan-input:focus,
+.klipsan-fields .klipsan-input:focus {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+.klipsan-auth-form .klipsan-button {
+    box-shadow: 0 12px 28px rgba(255, 255, 255, 0.14);
+}
+
+.klipsan-auth-form .klipsan-button:hover {
+    box-shadow: 0 14px 32px rgba(255, 255, 255, 0.2);
+}
+
+.workspace-multi-content {
+    display: grid;
+    gap: 1.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    padding: 1.25rem;
+    border-radius: 20px;
 }
 
 .klipsan-button.ghost {
